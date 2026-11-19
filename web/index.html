@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="en" data-verified="2026-11-02">
+<head>
+<meta name="arcroad:build" content="ar-30efaeeace44">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>arcroad — what it costs to cross your own road</title>
+<meta name="description" content="What road layout costs the people who live beside it, from open data. Drives so far: 5 of 8 directions matched, under rules fixed before driving.">
+<link rel="canonical" href="https://arcroad.org/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="arcroad">
+<meta property="og:title" content="arcroad — what it costs to cross your own road">
+<meta property="og:description" content="Measuring what road geometry costs the people who live beside it, from open data, with every claim checkable. Drive results so far: 5 of 8 directions matched the model under rules fixed before driving.">
+<meta property="og:url" content="https://arcroad.org/">
+<meta property="og:image" content="https://arcroad.org/og/home.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="arcroad: the other side is 13 metres away, the legal way round is 1.58 km">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://arcroad.org/og/home.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke='%23E2743B' stroke-linecap='round'%3E%3Cpath d='M12 25 A 10 10 0 1 1 20 25' stroke-width='2.8'/%3E%3C/g%3E%3Ccircle cx='12' cy='25' r='2.4' fill='%23E2743B'/%3E%3Ccircle cx='20' cy='25' r='2.4' fill='%23E2743B'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{
+  --bg:#0B0D10; --surface:#11141A; --line:#1C2026; --line2:#2A3038;
+  --fg:#E6E8EB; --fg2:#F5F6F7; --mut:#8B939C; --faint:#7D858E;
+  --accent:#E2743B; --soft:#F0C2A0; --good:#8FA89A; --warm:#C9A188;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+.m{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.staging{background:#15110D;border-bottom:1px solid #2A2520}
+.staging .wrap{padding-block:11px;display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;justify-content:space-between}
+.staging p{margin:0;font-size:13px;line-height:1.5;color:#B9A594}
+.staging .m{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+header .wrap{padding-block:26px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
+header .wrap{position:relative}header .wrap::after{content:"";position:absolute;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:0;height:1px;background:var(--line)}
+.logo{font-size:20px;font-weight:600;letter-spacing:-0.02em;color:var(--fg2)}
+.place{font-size:13px;color:var(--faint);margin-left:12px}
+nav{display:flex;gap:24px;font-size:14px}
+nav a{color:var(--mut);text-decoration:none}
+nav a{white-space:nowrap}
+@media (max-width:720px){nav{gap:18px;overflow-x:auto;max-width:100%;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}nav::-webkit-scrollbar{display:none}}
+nav a:hover{color:var(--fg2)}
+h1{margin:0 0 18px;font-size:clamp(30px,6vw,46px);line-height:1.1;letter-spacing:-0.03em;font-weight:600;color:var(--fg2);text-wrap:balance;max-width:17ch}
+.lede{margin:0;font-size:clamp(15px,2.4vw,18px);line-height:1.6;color:var(--mut);max-width:58ch}
+section{padding-block:46px}
+h2{margin:0 0 16px;font-size:20px;font-weight:600;letter-spacing:-0.02em;color:var(--fg2)}
+h3{margin:0 0 8px;font-size:15.5px;font-weight:500;color:#D4D9DE}
+.tick{border-bottom:1px solid var(--line);padding:28px 0 30px}
+.tick .eyebrow{margin:0 0 10px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.tick .big{display:flex;flex-wrap:wrap;gap:12px 40px;margin:6px 0 14px}
+.tick .big div{min-width:0}
+.tick .big b{display:block;font-size:clamp(28px,5vw,40px);font-weight:500;letter-spacing:-.03em;color:var(--accent);font-variant-numeric:tabular-nums}
+.tick .big span{font-size:12.5px;color:var(--faint)}
+.tick p{margin:0 0 10px;font-size:14.5px;line-height:1.65;color:var(--mut);max-width:70ch}
+.tick .seg{display:inline-flex;gap:8px;margin:2px 0 12px}
+.tick .seg button{min-height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line2);background:none;color:var(--fg);font:inherit;font-size:13.5px;cursor:pointer}
+.tick .seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--fg2)}
+.tick small{display:block;font-size:12.5px;line-height:1.6;color:var(--faint);max-width:72ch}
+.band{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1px solid var(--line2);border-bottom:1px solid var(--line)}
+.cell{padding:22px 20px;border-right:1px solid var(--line);min-width:0}
+.cell:first-child{padding-left:0}
+.cell:last-child{border-right:0}
+@media (max-width:720px){.band{grid-template-columns:repeat(2,minmax(0,1fr))}.cell:nth-child(odd){padding-left:0}.cell:nth-child(2){border-right:0}.cell:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+.cell .v{margin:0 0 6px;font-size:clamp(24px,4.5vw,32px);font-weight:500;letter-spacing:-0.03em;color:var(--fg2)}
+.cell .v.hot{color:var(--accent)}
+.cell .k{margin:0;font-size:12.5px;line-height:1.45;color:var(--faint)}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th{text-align:left;padding:11px 10px 11px 0;border-top:1px solid var(--line2);border-bottom:1px solid var(--line);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:400}
+td{padding:13px 10px 13px 0;border-bottom:1px solid var(--line);vertical-align:baseline}
+th.n,td.n{text-align:right;padding-right:0}
+.scroll{overflow-x:auto}
+.scroll table{min-width:560px}
+.bar{display:block;height:4px;border-radius:2px;background:var(--line);min-width:70px}
+.bar span{display:block;height:4px;border-radius:2px}
+.flagrow td{color:var(--mut)}
+.gapnote{font-size:12.5px;color:var(--warm)}
+.note{border:1px solid #2A2520;border-left:3px solid var(--accent);background:#15110D;padding:22px 24px;border-radius:0 6px 6px 0}
+.note p{margin:0;font-size:15px;line-height:1.68;color:#B9A594;max-width:76ch}
+.note p+p{margin-top:11px}
+.lims{border-top:1px solid var(--line)}
+.lim{display:flex;flex-wrap:wrap;gap:16px;padding:15px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.lim .s{flex:0 0 96px;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase}
+.lim .t{flex:1 1 320px;min-width:0;font-size:14.5px;line-height:1.62;color:var(--fg)}
+.s-open{color:var(--accent)} .s-prog{color:var(--warm)} .s-fix{color:var(--good)}
+.act .eyebrow{margin:0 0 10px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.act .why{margin:0 0 30px;font-size:clamp(19px,2.8vw,24px);line-height:1.45;letter-spacing:-.015em;color:var(--fg2);max-width:46ch;text-wrap:pretty}
+.act .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line2)}
+.act .three>div{padding:22px 24px 18px 0;min-width:0}
+.act .three>div+div{padding-left:24px;border-left:1px solid var(--line)}
+.act h3{margin:0 0 8px;font-size:12px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.act .p{margin:0;font-size:16px;line-height:1.5;color:var(--fg2);letter-spacing:-.01em}
+.act details summary{list-style:none;display:inline-flex;align-items:center;gap:8px;min-height:40px;margin-top:6px;font-size:13px;color:var(--faint);cursor:pointer}
+.act details summary::-webkit-details-marker{display:none}
+.act details summary::before{content:"+";font:500 15px/1 ui-monospace,monospace;color:var(--accent);width:12px}
+.act details[open] summary::before{content:"\2212"}
+.act details summary:hover{color:var(--mut)}
+.act ul{margin:4px 0 0;padding:0;list-style:none}
+.act li{margin:0 0 10px;font-size:13.5px;line-height:1.6;color:var(--mut)}
+.act li a,.act .p a{color:var(--accent)}
+.act .fix{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);padding:20px 0 4px}
+.act .fix .p{font-size:15px;color:var(--fg);padding-right:24px;min-width:0}
+.act .fix .p+.p{grid-column:2 / 4;padding-left:24px}
+.act .fix span{display:block;margin-bottom:4px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.act .src{border-top:1px solid var(--line);margin-top:16px}
+.act .src li{font-size:12.5px;color:var(--faint);max-width:90ch}
+@media (max-width:820px){.act .three{grid-template-columns:minmax(0,1fr)}.act .three>div+div{padding-left:0;border-left:0;border-top:1px solid var(--line)}.act .three>div{padding-right:0}.act .fix{grid-template-columns:minmax(0,1fr);row-gap:12px}.act .fix .p+.p{grid-column:auto;padding-left:0}}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px}
+footer{border-top:1px solid var(--line)}
+footer .wrap{padding-block:26px 56px}
+footer p{margin:0 0 9px;font-size:12.5px;line-height:1.7;color:var(--faint);max-width:80ch}
+a{color:#E8A87C}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none}
+.brand svg{width:27px;height:27px;flex:0 0 auto;color:var(--accent);overflow:visible}
+.brand .drive{stroke-dasharray:62;stroke-dashoffset:62;animation:draw 1900ms cubic-bezier(.22,.61,.36,1) 220ms forwards}
+.brand .dot{opacity:0;animation:fade 700ms ease-out forwards}
+.brand .dot.a{animation-delay:180ms}
+.brand .dot.b{animation-delay:1750ms}
+.brand .chord{opacity:0;animation:fadeChord 900ms ease-out 1900ms forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fade{to{opacity:1}}
+.brand .chord{--to:.55}
+@keyframes fadeChord{to{opacity:.55}}
+@media (pointer:coarse){nav a,.top a{padding-block:10px;display:inline-block} .srcbtn{padding:10px 0}}
+@media (prefers-reduced-motion:reduce){
+  .brand .drive{animation:none;stroke-dashoffset:0}
+  .brand .dot{animation:none;opacity:1}
+  .brand .chord{animation:none;opacity:.55}
+}
+.skip{position:absolute;left:-9999px;top:0;background:var(--accent);color:#0B0D10;padding:10px 16px;border-radius:0 0 6px 0;font-weight:500;z-index:50}
+.skip:focus{left:0}
+.soon{display:inline-block;margin-left:7px;padding:2px 7px;border-radius:999px;border:1px solid #3A2A1F;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);vertical-align:1px}
+#top{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:40;width:44px;height:44px;border-radius:50%;border:1px solid var(--line2);background:#161A21;color:var(--fg);cursor:pointer;display:grid;place-items:center;opacity:0;visibility:hidden;box-shadow:0 6px 18px rgba(0,0,0,.45)}
+#top.on{opacity:1;visibility:visible}
+#top:hover{border-color:var(--accent);color:var(--soft)}
+#top svg{width:17px;height:17px}
+.more{margin-top:14px;border-top:1px solid var(--line)}
+.more summary{list-style:none;cursor:pointer;padding:12px 0;font-size:13.5px;color:var(--mut);display:flex;gap:10px;align-items:baseline}
+.more summary::-webkit-details-marker{display:none}
+.more summary::before{content:"+";font-family:"JetBrains Mono",monospace;color:var(--accent);flex:0 0 12px}
+.more[open] summary::before{content:"\2212"}
+.more summary:hover{color:var(--fg2)}
+.more>div{padding:2px 0 8px 22px}
+.why{margin:18px 0 0;max-width:68ch;font-size:14px;line-height:1.65;color:var(--mut)}
+.why summary{cursor:pointer;color:var(--fg2);font-size:13.5px;list-style:none}
+.why summary::-webkit-details-marker{display:none}
+.why summary::before{content:"+ ";color:var(--accent)}
+.why[open] summary::before{content:"\2212  "}
+.why dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:14px 0 0}
+.why dt{color:var(--faint);font-size:12.5px}
+.why dd{margin:0}
+.why p{margin:12px 0 0}
+@media (max-width:560px){.why dl{grid-template-columns:1fr}.why dd{margin-bottom:6px}}
+.mtag{margin:-4px 0 18px;font-size:13px;line-height:1.5;color:var(--mut)}.mtag span{display:inline-block;margin-right:8px;padding:2px 9px;border:1px solid var(--line2);border-radius:999px;font:500 10.5px/1.6 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}.mtag a{color:var(--mut);text-underline-offset:3px}
+.tw{position:relative;max-width:1068px}
+.tw .teaser{max-width:none}
+.tp{position:absolute;top:8px;right:8px;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(8,10,14,.42);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);display:grid;place-items:center;cursor:pointer;opacity:.0;transition:opacity .4s cubic-bezier(.4,0,.2,1),border-color .2s,background .2s;padding:0}
+.tw:hover .tp,.tp:focus-visible,.tp[aria-pressed=true]{opacity:1}
+@media (hover:none){.tp{opacity:.85}}
+.tp:hover{border-color:rgba(255,255,255,.32);background:rgba(8,10,14,.6)}
+.tp:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tp svg{width:14px;height:14px;fill:none;stroke:var(--fg2);stroke-width:1.8;stroke-linecap:round}
+.tp .pl{display:none;fill:var(--fg2);stroke:none}.tp[aria-pressed=true] .ps{display:none}.tp[aria-pressed=true] .pl{display:block}
+.teaser{display:block;position:relative;margin:26px 0 0;max-width:1068px;aspect-ratio:16/9;border-radius:16px;overflow:hidden;border:1px solid var(--line2);background:#0E1116;text-decoration:none}
+.teaser video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity 1.2s cubic-bezier(.4,0,.2,1)}
+.teaser video.on{opacity:1}
+.teaser .dots{position:absolute;top:23px;right:54px;display:flex;gap:6px}
+.teaser .dots i{width:5px;height:5px;border-radius:50%;background:rgba(245,246,247,.28);transition:background .6s ease,transform .6s ease}
+.teaser .dots i.on{background:var(--accent);transform:scale(1.25)}
+.teaser .cap b,.teaser .cap small{transition:opacity .5s ease}
+.teaser .tz{position:absolute;left:0;right:0;bottom:0;padding:16px 18px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;padding-top:56px;background:linear-gradient(rgba(5,7,11,0),rgba(5,7,11,.62) 45%,rgba(5,7,11,.9));color:var(--fg2);text-shadow:0 1px 10px rgba(0,0,0,.35)}
+.teaser .tz b{display:block;font-size:15.5px;font-weight:600;letter-spacing:-0.01em}
+.teaser .tz small{display:block;font-size:13px;color:#C9CDD2}
+.teaser .go{font-size:14.5px;color:var(--accent);white-space:nowrap}
+.teaser:hover{border-color:var(--accent)}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.cta a{display:inline-block;padding:11px 18px;border-radius:999px;border:1px solid var(--line2);color:var(--fg);text-decoration:none;font-size:14.5px}
+.cta a.p{background:var(--accent);border-color:var(--accent);color:#0B0D10;font-weight:500}
+.cta a:hover{border-color:var(--accent)}
+.faq{border-top:1px solid var(--line)}
+.q{border-bottom:1px solid var(--line)}
+.q summary{list-style:none;cursor:pointer;padding:15px 0;font-size:15.5px;line-height:1.5;color:var(--fg2);display:flex;gap:14px;align-items:baseline}
+.q summary::-webkit-details-marker{display:none}
+.q summary::before{content:"+";font-family:"JetBrains Mono",monospace;color:var(--accent);flex:0 0 14px;font-size:15px}
+.q[open] summary::before{content:"\2212"}
+.q .a{padding:0 0 17px 28px;font-size:14.5px;line-height:1.72;color:var(--mut);max-width:74ch}
+.q .a p{margin:0 0 10px}
+.q .a p:last-child{margin-bottom:0}
+.q .src{display:block;margin-top:9px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint)}
+@media (prefers-reduced-motion:no-preference){#top{transition:opacity .18s,visibility .18s,border-color .15s,color .15s}}
+a:hover{color:var(--soft)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+</style>
+<meta name="theme-color" content="#0B0D10">
+<meta name="color-scheme" content="dark">
+<meta name="format-detection" content="telephone=no">
+<style id="mobile-base">
+/* Shared mobile and cross-browser base (Safari iOS, Chrome/Samsung Android, Firefox) */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{overflow-wrap:break-word;padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+a,button,summary,select,label{-webkit-tap-highlight-color:rgba(232,168,124,.22);touch-action:manipulation}
+details>summary{cursor:pointer;min-height:44px;box-sizing:border-box;align-items:center}
+details>summary::-webkit-details-marker{display:none}
+input[type=range]{min-height:36px;touch-action:pan-y;cursor:pointer}
+table{font-variant-numeric:tabular-nums}
+.wrap,.scroll{-webkit-overflow-scrolling:touch}
+img,svg,canvas,video{max-width:100%}
+@media (max-width:720px){
+  input,select,textarea{font-size:16px!important}
+  h1{overflow-wrap:anywhere}
+  .top,header nav{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;white-space:nowrap;margin-left:0!important;max-width:100%}
+  .top::-webkit-scrollbar,header nav::-webkit-scrollbar,.presets::-webkit-scrollbar{display:none}
+  .presets{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;white-space:nowrap}
+  .presets .reset{margin-left:0!important}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+<link rel="stylesheet" href="search.css">
+<link rel="stylesheet" href="nav.css" id="sn-css">
+<script src="nav.js" defer id="sn-js"></script>
+</head>
+<body>
+
+<a class="skip" href="#findings">Skip to the findings</a>
+
+<div class="staging">
+  <div class="wrap">
+    <p><strong style="color:var(--soft);font-weight:500">v0 · first drive results.</strong> 1–7 Nov 2026: we drove the model's detours and 5 of 8 comparable directions matched under rules fixed before driving (8 of 8 counting three judged under rules changed afterwards; see results). Area figures below are still model values. <a href="field/" style="color:var(--accent)">See every pass</a></p>
+    <span class="m">6 places driven · 6 days</span>
+  </div>
+</div>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="arcroad, Hyderabad, home">
+      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-linecap="round">
+          <path class="drive" d="M12 25 A 10 10 0 1 1 20 25" stroke-width="2.4"/>
+          <path class="chord" d="M12 25 L20 25" stroke-width="1.5"/>
+        </g>
+        <circle class="dot a" cx="12" cy="25" r="2.1" fill="currentColor"/>
+        <circle class="dot b" cx="20" cy="25" r="2.1" fill="currentColor"/>
+      </svg>
+      <span><span class="logo">arcroad</span><span class="place">Hyderabad</span></span>
+    </a>
+    <!-- nav:start --><nav class="sn" aria-label="arcroad"><a class="sn-i" href="drive/">Drive it</a><div class="sn-g"><button class="sn-i" type="button" aria-expanded="false" aria-controls="sn-findings">Findings</button><div class="sn-p" id="sn-findings"><a href="field/"><b>Driven results</b><span>Every pass we drove, by direction</span></a><a href="evidence/"><b>Evidence</b><span>What studies show about roads and behaviour</span></a><a href="globe/"><b>Globe</b><span>29 cities, from orbit to your street</span></a><a href="data/"><b>Open data</b><span>Download the counts, free to use</span></a></div></div><div class="sn-g"><button class="sn-i" type="button" aria-expanded="false" aria-controls="sn-cost">Your cost</button><div class="sn-p" id="sn-cost"><a href="cost/"><b>Cost calculator</b><span>Your crossing in rupees and minutes</span></a><a href="roads/"><b>What else the road costs</b><span>Barricades, works, parking, surface</span></a><a href="roads/glare/"><b>Night glare</b><span>An oncoming high beam, from the driver's seat</span></a><a href="act.html"><b>Write to the people responsible</b><span>A ready letter for each place</span></a></div></div><div class="sn-g"><button class="sn-i" type="button" aria-expanded="false" aria-controls="sn-part">Take part</button><div class="sn-p" id="sn-part"><a href="volunteer/"><b>Volunteer</b><span>Measure your own city</span></a><a href="report/"><b>Report a change</b><span>A median opening opened or closed</span></a></div></div><a class="sn-i" href="help/">Help</a></nav><!-- nav:end -->
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h1>A place you can see, 1.5 km away</h1>
+    <p class="lede">Divided roads cut neighbours off. arcroad measures what crossing your own road costs, then drives the detour to check. <a href="#act" style="color:var(--accent);white-space:nowrap">What you can do ↓</a></p>
+    <div class="tw">
+    <a class="teaser" href="drive/3d/?dive=1" aria-label="Ride the S18 detour in 3D: 13 metres across, 1.58 kilometres to get there">
+      <video class="on" muted playsinline preload="none" poster="drive/media/films/drive.jpg" aria-hidden="true"></video>
+      <video muted playsinline preload="none" aria-hidden="true"></video>
+      <span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="tz"><span class="cap"><b>13 m across. 1.58 km to get there.</b><small>3D illustration of our 1 Nov drive at S18</small></span><span class="go">Dive into 3D →</span></span>
+    </a>
+    <button class="tp" type="button" aria-label="Pause the film" aria-pressed="false" hidden><svg viewBox="0 0 16 16" aria-hidden="true"><path class="ps" d="M5 3.5v9M11 3.5v9"/><path class="pl" d="M5.5 3.2v9.6L12.6 8z"/></svg></button>
+    </div>
+    <script>
+    (function () {
+      var box = document.querySelector('.teaser'); if (!box) return;
+      var V = box.querySelectorAll('video'), cap = box.querySelector('.cap'), dots = box.querySelectorAll('.dots i');
+      // Six films, all built from measured drives (tools/films/). Played in random order; nothing is stored.
+      var FILMS = [
+        ['drive', '13 m across. 1.58 km to get there.', '3D illustration of our 1 Nov drive at S18', 'drive/3d/?dive=1'],
+        ['night', '17 m across. 1.95 km after dark.', 'Illustration of our 2 Nov night drive at S12', 'drive/3d/?place=S12&dive=1'],
+        ['orbit', 'From orbit to 13 metres.', '29 cities on the globe, down to one road in Hyderabad', 'globe/?spot=S18'],
+        ['thread', '1,580 m to cross 13 m.', 'The S18 detour, traced from our drive', 'drive/3d/?dive=1'],
+        ['blueprint', 'What could fix it.', 'Three options drawn on S18 · illustration, not a design', 'drive/3d/?fix=auto'],
+        ['timelapse', 'A year of crossing: ₹1,901.', 'One person, both ways, every working day, two-wheeler', 'drive/3d/?dive=1']
+      ];
+      var cur = Math.floor(Math.random() * FILMS.length);
+      function show(k) {
+        var f = FILMS[k]; cap.firstChild.textContent = f[1]; cap.lastChild.textContent = f[2]; box.setAttribute('href', f[3]); box.setAttribute('aria-label', f[1] + ' ' + f[2]);
+        for (var d = 0; d < dots.length; d++) dots[d].className = d === k ? 'on' : '';
+      }
+      V[0].poster = 'drive/media/films/' + FILMS[cur][0] + '.jpg'; show(cur);
+      var rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var c = navigator.connection || {};
+      if (rm || c.saveData || /(^|-)2g$/.test(c.effectiveType || '') || !('IntersectionObserver' in window)) return;
+      // Size: the smallest file that covers the box at this screen's density, one step sharper on a fast link.
+      var TIERS = [[480, 854], [720, 1280], [1080, 1920], [1440, 2560], [2160, 3840]];
+      var need = box.clientWidth * Math.min(window.devicePixelRatio || 1, 3), i = 0;
+      while (i < TIERS.length - 1 && TIERS[i][1] < need) i++;
+      var slow = c.effectiveType === '3g' || (c.downlink && c.downlink < 3), fast = c.downlink ? c.downlink >= 10 : screen.width >= 1280;
+      if (slow) i = 0; else { if (fast) i++; if (c.downlink && c.downlink < 8) i = Math.min(i, 2); }
+      i = Math.max(0, Math.min(TIERS.length - 1, i));
+      function url(k) { return 'drive/media/films/' + FILMS[k][0] + '-' + TIERS[i][0] + '.mp4'; }
+      function nextOf(k) { var n = Math.floor(Math.random() * (FILMS.length - 1)); return n >= k ? n + 1 : n; }
+      var a = 0, nxt = nextOf(cur), started = false, timer = 0, inView = false;
+      function play(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+      function load() {
+        V[a].src = url(cur); play(V[a]);
+        clearTimeout(timer); timer = setTimeout(function () { if (!started && i > 0) { i--; load(); } }, 4000);
+      }
+      function onTime() {
+        var v = V[a], o = V[1 - a];
+        if (v.duration && v.currentTime > v.duration - 3 && !o.getAttribute('src')) { o.preload = 'auto'; o.src = url(nxt); o.load(); }
+      }
+      function onEnd() {
+        var o = V[1 - a]; if (!o.getAttribute('src')) { o.src = url(nxt); }
+        o.currentTime = 0; play(o); o.className = 'on'; V[a].className = '';
+        var old = V[a]; setTimeout(function () { old.pause(); old.removeAttribute('src'); old.load(); }, 900);
+        a = 1 - a; cur = nxt; nxt = nextOf(cur); show(cur);
+      }
+      for (var k = 0; k < 2; k++) {
+        V[k].addEventListener('playing', function () { started = true; clearTimeout(timer); });
+        V[k].addEventListener('timeupdate', function (e) { if (e.target === V[a]) onTime(); });
+        V[k].addEventListener('ended', function (e) { if (e.target === V[a]) onEnd(); });
+      }
+      var tp = document.querySelector('.tp'), held = false;
+      if (tp) {
+        tp.hidden = false;
+        tp.addEventListener('click', function () {
+          held = !held; tp.setAttribute('aria-pressed', String(held));
+          tp.setAttribute('aria-label', held ? 'Play the film' : 'Pause the film');
+          if (held) V[a].pause(); else if (inView) { if (!V[a].getAttribute('src')) load(); else play(V[a]); }
+        });
+      }
+      new IntersectionObserver(function (e) {
+        inView = e[0].isIntersecting;
+        if (inView && !held) { if (!V[a].getAttribute('src')) load(); else play(V[a]); } else V[a].pause();
+      }, { threshold: 0.25 }).observe(box);
+    })();
+    </script>
+    <details class="why">
+      <summary>Which place is this, and how we picked it</summary>
+      <dl>
+        <dt>Place</dt><dd>HITEC City–Kukatpally Main Road at KPHB Colony (arcroad place S18: S01 to S24 are the 24 places of our first field sample, drawn at random before any drive). <a href="drive/" style="color:var(--accent)">Ride the detour</a> · <a href="globe/?spot=S18" style="color:var(--accent)">See it on the globe</a></dd>
+        <dt>Straight across</dt><dd>13 m, measured on OpenStreetMap (extract of 2 Nov 2026)</dd>
+        <dt>Model said</dt><dd>1.57 km one way, 1.38 km the other</dd>
+        <dt>We drove</dt><dd>1.58 km and 1.55 km, on 1 Nov 2026, phone GPS once a second (about ±50 m)</dd>
+        <dt>Your cost</dt><dd><a href="cost/?place=S18%20west%20to%20east&amp;veh=tw&amp;km=1.57&amp;min=3" style="color:var(--accent)">West to east, 1.57 km extra</a> · <a href="cost/?place=S18%20east%20to%20west&amp;veh=tw&amp;km=1.53&amp;min=12" style="color:var(--accent)">East to west, 1.53 km extra</a>. Opens the calculator with this crossing filled in; change anything.</dd>
+        <dt>Evidence</dt><dd>Both directions driven and matched the model; one direction also photographed</dd>
+      </dl>
+      <p>Chosen by a rule fixed in advance: among driven directions that matched the model, leave out access-controlled roads such as the Outer Ring Road, where the long way round is by design, then take the strongest evidence. It is not our biggest number: S16, same drive, was 2.3 km for 19 m. <a href="field/" style="color:var(--accent)">Every pass we drove</a></p>
+    </details>
+    <div class="cta"><a class="p" href="cost/">What does it cost you?</a><a href="field/">What we drove</a><a href="roads/">What else the road costs</a></div>
+    <form class="rs" data-base="./" role="search" autocomplete="off">
+      <label for="rs-home">Find your road</label>
+      <input class="rs-in" id="rs-home" type="search" inputmode="search" enterkeyhint="search" placeholder="A road or area, e.g. Mumbai Highway, Kondapur" aria-describedby="rs-home-out">
+      <div class="rs-out" id="rs-home-out" aria-live="polite"></div>
+    </form>
+  </div>
+</section>
+
+<section id="findings" style="padding-top:0">
+  <div class="wrap">
+    <div class="band">
+      <div class="cell"><p class="v">12,585</p><p class="k">Points measured</p></div>
+      <div class="cell"><p class="v hot">2.2–3.8×</p><p class="k">Beyond the ring road vs the core city</p></div>
+      <div class="cell"><p class="v">94</p><p class="k">Areas ranked</p></div>
+      <div class="cell"><p class="v hot">8 / 8</p><p class="k">Driven directions that matched the model (1–7 Nov 2026)</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0" id="act" class="act" aria-labelledby="h-act">
+  <div class="wrap">
+    <p class="eyebrow" id="h-act">What you can do</p>
+    <p class="why">arcroad exists to show what crossing your own road really costs, so that it gets fixed. A fix takes years. These help today.</p>
+    <div class="three">
+      <div>
+        <h3>Before you leave</h3>
+        <p class="p">Check your crossing, and add the detour to your time.</p>
+        <details><summary>More</summary><ul>
+          <li><a href="drive/">See the detour we drove</a> at your place, or <a href="cost/">put in your own numbers</a>.</li>
+          <li>At KPHB Colony the legal way round took us 3&nbsp;minutes one way and 12 the other, on the same day.</li>
+          <li>The longest we have driven: 2.3&nbsp;km at HITEC City, 2.2&nbsp;km on the Gachibowli–Miyapur Road and 1.95&nbsp;km on the Hafeezpet Flyover.</li>
+        </ul></details>
+      </div>
+      <div>
+        <h3>On the road</h3>
+        <p class="p">Take the legal way round. Never against traffic.</p>
+        <details><summary>More</summary><ul>
+          <li>Driving against traffic is an offence under the Motor Vehicles Act, and dangerous driving carries a fine or jail.</li>
+          <li>No U-turn where a sign or signal forbids it.</li>
+          <li>Dip your headlights in good time for oncoming traffic and when close behind someone; keep high beam off on lit roads. <a href="roads/glare/">What glare does</a></li>
+        </ul></details>
+      </div>
+      <div>
+        <h3>In an emergency</h3>
+        <p class="p">Call 112, and pull aside for a siren.</p>
+        <details><summary>More</summary><ul>
+          <li>112 reaches police, fire and ambulance across Telangana; 108 still reaches an ambulance.</li>
+          <li>Blocking an ambulance or fire engine can mean a ₹10,000 fine or six months.</li>
+          <li>Plan the long crossings before you need to hurry: a rush is when the shortcut against traffic looks tempting, and it puts everyone coming the other way at risk.</li>
+        </ul></details>
+      </div>
+    </div>
+    <div class="fix">
+      <p class="p"><span>Short term</span>Signs to the next U-turn, lit bays, enforcement.</p>
+      <p class="p"><span>Long term</span>A nearer opening, a signal or an underpass. <a href="drive/3d/?fix=auto">See the fixes</a></p>
+    </div>
+    <details class="src"><summary>Sources and limits</summary>
+      <ul>
+        <li>Short term, weeks and low cost: a sign before each closed median saying how far the next U-turn is; lit, marked U-turn bays; enforcement where people ride against traffic, so the legal way round is the normal one.</li>
+        <li>Long term, years and infrastructure: a U-turn opening nearer, a signal-free U-turn with a bay, a signal-controlled crossing or a U-turn underpass, each drawn on a real road with its trade-off.</li>
+        <li>Rules: Motor Vehicles Act 1988 ss. 119, 177, 184 and 194E (as amended in 2019); Motor Vehicles (Driving) Regulations 2017, regs 8 and 31. Fines for driving against traffic differ by state. Emergency number: Telangana Police Dial-112.</li>
+        <li>Detour times are from single arcroad drives on 1–7 Nov 2026. The short-term ideas are options for the road owner, not measured results; arcroad does not count wrong-way riding at any place or link a crash to a road feature.</li>
+      </ul>
+    </details>
+  </div>
+</section>
+
+<section style="padding-top:0" aria-labelledby="h-tick">
+  <div class="wrap">
+    <div class="tick" id="ticker">
+      <p class="eyebrow" id="h-tick">One crossing, one person</p>
+      <p>Cross HITEC City–Kukatpally Main Road at KPHB Colony and back once every working day, as we drove it, and in a year it costs:</p>
+      <div class="big" aria-live="polite">
+        <div><b id="t-rs">–</b><span>in fuel</span></div>
+        <div><b id="t-h">–</b><span>hours on the road</span></div>
+        <div><b id="t-km">–</b><span>extra km</span></div>
+      </div>
+      <div class="seg" role="group" aria-label="Vehicle"><button type="button" data-v="tw" aria-pressed="true">Two-wheeler</button><button type="button" data-v="car" aria-pressed="false">Car</button></div>
+      <p>That is <span id="t-day">–</span> a working day, for a place 13 m away. <a href="cost/?place=S18%20both%20ways&amp;veh=tw&amp;km=3.10&amp;min=15" style="color:var(--accent)">Put in your own numbers</a></p>
+      <small>From one arcroad drive on 1 Nov 2026, a Sunday: 1.58 km and 1.55 km, 15 minutes both ways including waits. A year here is 22 working days a month. Fuel uses the cost calculator's figures: petrol ₹116.15 a litre (16 Oct 2026), 50 km a litre on a two-wheeler, 16 in a car. One person and one crossing, not a city total: how many people cross here has not been measured. The east-to-west time is a single pass and is being re-checked.</small>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2>It's worst at the edge of the city</h2>
+    <p class="mtag"><span>Modelled</span> from OpenStreetMap, not yet driven. <a href="field/">Driven results</a></p>
+    <p style="margin:0 0 20px;font-size:15px;line-height:1.7;color:var(--mut);max-width:70ch">The detour index is how far you drive to reach the point straight across the road: 40 means forty times the distance. It peaks 26–40 km from the centre, where Patancheru and Isnapur sit.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr>
+          <th>Ring</th><th class="n">Points</th><th class="n">Median index</th><th class="n">Above 50</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Core city, 0–14 km</td><td class="n m">5,521</td><td class="n m">18.05</td><td class="n m">20.5%</td></tr>
+          <tr><td>Ring road band, 14–26 km</td><td class="n m">3,955</td><td class="n m">33.76</td><td class="n m">39.9%</td></tr>
+          <tr><td>Peri-urban fringe, 26–40 km</td><td class="n m" style="color:var(--accent)">1,045</td><td class="n m" style="color:var(--accent)">57.52</td><td class="n m" style="color:var(--accent)">53.8%</td></tr>
+          <tr><td>Rural, 40–60 km</td><td class="n m">1,589</td><td class="n m">48.10</td><td class="n m">49.0%</td></tr>
+          <tr><td>Beyond 60 km</td><td class="n m">475</td><td class="n m">47.26</td><td class="n m">49.1%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <details class="more"><summary>Does it hold up? Five ways of filtering the data</summary><div>
+    <p style="margin:0 0 12px;font-size:14px;line-height:1.7;color:var(--mut);max-width:74ch">Crossing a road beyond the Outer Ring Road costs two to four times what it costs in the core city, depending on the filter. It narrows under correction; it never disappears.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr>
+          <th>Treatment</th><th class="n">Core</th><th class="n">Beyond ORR</th><th class="n">Ratio</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>No correction</td><td class="n m">18.02</td><td class="n m">51.38</td><td class="n m" style="color:var(--accent)">2.85×</td></tr>
+          <tr><td>Drop routes over 10 km</td><td class="n m">17.91</td><td class="n m">46.61</td><td class="n m" style="color:var(--accent)">2.60×</td></tr>
+          <tr><td>Drop routes over 5 km</td><td class="n m">17.41</td><td class="n m">38.00</td><td class="n m" style="color:var(--accent)">2.18×</td></tr>
+          <tr><td>Literal crossings only, under 25 m apart</td><td class="n m">24.05</td><td class="n m">92.42</td><td class="n m" style="color:var(--accent)">3.84×</td></tr>
+          <tr><td>Share of points above index 50</td><td class="n m">20.4%</td><td class="n m">50.6%</td><td class="n m" style="color:var(--accent)">2.48×</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin:16px 0 12px;font-size:14px;line-height:1.7;color:var(--mut);max-width:74ch">A reading, not a conclusion. On the fringe, highway-grade divided roads already exist but the street network behind them has not filled in, so nothing absorbs the severance. Further out there are fewer divided roads. The shape fits this explanation; it has not been tested against it. Patancheru and Isnapur, where this project began, sit at roughly 36 km — inside the peak ring.</p>
+    <p style="margin:0 0 12px;font-size:14px;line-height:1.7;color:var(--mut);max-width:74ch">"Beyond ORR" here means everything past 26 km, including points up to 85 km from the centre. On 26 October 2026 we found that 12.2% of the measured set lay outside the study area this project had declared. Those points score lower than the true fringe, so every ratio in this table understates the fringe rather than overstating it. The ring table above is the corrected view. The next run will be clipped to the declared area and these figures replaced, not revised.</p>
+    </div></details>
+  </div>
+</section>
+
+<section id="areas" style="padding-top:0">
+  <div class="wrap">
+    <h2>Worst areas measured</h2>
+    <p class="mtag"><span>Modelled</span> from OpenStreetMap, not yet driven. <a href="field/">Driven results</a></p>
+    <div class="scroll">
+      <table>
+        <thead><tr>
+          <th>Area</th><th>Severity</th><th class="n">Index</th><th class="n">To cross</th><th class="n">Points</th>
+        </tr></thead>
+        <tbody id="areas-body"></tbody>
+      </table>
+    </div>
+    <p style="margin:16px 0 0;font-size:14px;color:var(--mut)">Compare areas with each other; the exact numbers are still model values.</p>
+    <details class="more"><summary>Why the numbers run high</summary><div><p style="margin:0 0 12px;font-size:14px;line-height:1.7;color:var(--mut);max-width:74ch">The open map under-records small connections — median openings and service roads drivers use daily are often missing. That inflates every absolute figure here by an unknown amount. It affects all areas alike, so comparing one to another holds, while individual values do not yet.</p>
+      <p style="margin:0 0 12px;font-size:14px;line-height:1.7;color:var(--mut);max-width:74ch">Where a typical route runs past ten kilometres to cross twenty metres, a hole in the map is the likelier explanation than a real detour, and the row says so. Those are the first places we go back and correct the map.</p>
+    <p style="margin:0 0 12px;font-size:14px;line-height:1.7;color:var(--mut);max-width:74ch">Areas with fewer than thirty measured points are left out: a median over a handful of points is noise.</p></div></details>
+  </div>
+</section>
+
+<section id="method">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h2>How it is measured</h2>
+        <ol style="margin:0;padding-left:20px">
+          <li style="margin-bottom:10px;font-size:14.5px;line-height:1.65;color:var(--fg)">Take a point on a road modelled as two separate carriageways.</li>
+          <li style="margin-bottom:10px;font-size:14.5px;line-height:1.65;color:var(--fg)">Find the nearest point on the opposite carriageway, checked to be genuinely across the road rather than a flyover overhead or an unrelated street.</li>
+          <li style="margin-bottom:10px;font-size:14.5px;line-height:1.65;color:var(--fg)">Ask the road network for the shortest legal driving route between the two.</li>
+          <li style="font-size:14.5px;line-height:1.65;color:var(--fg)">Divide driving distance by straight-line distance.</li>
+        </ol>
+      </div>
+      <div>
+        <h2>What it leaves out</h2>
+        <p style="margin:0 0 6px;font-size:14.5px;line-height:1.68;color:var(--mut)">Travel time, walking, and anyone's motives.</p>
+        <details class="more"><summary>Why</summary><div>
+        <h3>Travel time</h3>
+        <p style="margin:0 0 16px;font-size:14.5px;line-height:1.68;color:var(--mut)">Distance and geometry only. Congestion and roadworks are deliberately excluded — a median still stands when the construction ends, and that is the claim worth making.</p>
+        <h3>Walking</h3>
+        <p style="margin:0 0 16px;font-size:14.5px;line-height:1.68;color:var(--mut)">The open map holds 407 pedestrian crossings and 212 footbridges for a metropolitan area of roughly ten million, and none within 400 m of Abids or Secunderabad station. Absence in the map is not absence on the ground, so every claim here is about driving.</p>
+        <h3>Intent or blame</h3>
+        <p style="margin:0;font-size:14.5px;line-height:1.68;color:var(--mut)">We publish what an authority recorded and what we measured. Never what we think that means about anyone's motives.</p>
+      </div></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <details class="more" style="border-top:0"><summary style="font-size:18px;color:var(--fg2)">Known limitations, kept in public</summary><div style="padding-left:0">
+    <div class="lims" id="lims"></div></div></details>
+  </div>
+</section>
+
+<section id="help" style="padding-top:0">
+  <div class="wrap">
+    <h2>Questions</h2>
+    <div class="faq" id="faq"></div>
+
+    <div class="cols" style="margin-top:34px">
+      <div>
+        <h3>Found a mistake?</h3>
+        <p style="margin:0;font-size:14.5px;line-height:1.68;color:var(--mut)">Tell us which junction and what the road actually does. It's the most useful thing you can send.</p>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <p style="margin:0;font-size:14.5px;line-height:1.68;color:var(--mut)">Write to <a href="mailto:hello@arcroad.org" style="color:var(--accent)">hello@arcroad.org</a>. More ways to reach us on the <a href="help/" style="color:var(--accent)">help page</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<button id="top" type="button" aria-label="Back to top" title="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<footer>
+  <div class="wrap">
+    <p>Map data © OpenStreetMap contributors, licensed under ODbL. arcroad's derived measurements are published under ODbL. Extract of 25 October 2026.</p>
+    <p class="m" id="prov">map extract 2026-10-25 · drives to 7 Nov 2026</p>
+    <p class="m" style="color:var(--faint)">Claims on this page last verified against their sources on 25 October 2026.</p>
+    <p>arcroad is an independent citizen project. It is not affiliated with GHMC, HMDA, NHAI, the Government of Telangana, or any political party.</p>
+  <!-- reuse:start --><span class="sn-reuse">© 2026 arcroad. Data (ODbL) and code (MIT) are free to reuse with credit; the arcroad name, logo, films and design are not. <a href="reuse/">What you may reuse</a> · <a href="terms/">Terms</a> · <a href="privacy/">Privacy</a></span><!-- reuse:end --></div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  // v1.0 measured values, extract of 25 Oct 2026. Candidates, not findings.
+  var AREAS = [
+    ["Padamati Sai Guda", 494.6, "10,057 m", 35, true],
+    ["Pocharam", 289.6, "5,938 m", 50, false],
+    ["Velankanni Nagar", 206.2, "3,961 m", 41, false],
+    ["S.LN Colony", 178.3, "3,571 m", 45, false],
+    ["Madhura Nagar", 118.4, "2,006 m", 117, false],
+    ["Sardarnagar", 117.1, "3,308 m", 31, false],
+    ["Gundannapalle", 108.6, "3,363 m", 42, false],
+    ["Dundigal", 102.1, "2,633 m", 33, false],
+    ["Narsingi", 101.0, "2,170 m", 69, false],
+    ["Humayun Nagar", 98.4, "1,684 m", 36, false]
+  ];
+  var MAX = 300;
+  var tone = function (v) { return v >= 50 ? "#E2743B" : v >= 20 ? "#C9A188" : "#8FA89A"; };
+
+  var body = document.getElementById("areas-body");
+  AREAS.forEach(function (a) {
+    var tr = document.createElement("tr");
+
+    var name = document.createElement("td");
+    name.textContent = a[0];
+    if (a[4]) {
+      var w = document.createElement("div");
+      w.className = "gapnote";
+      w.textContent = "route over 10 km — likely a gap in the map";
+      name.appendChild(w);
+      tr.className = "flagrow";
+    }
+
+    var sev = document.createElement("td");
+    var bar = document.createElement("span");
+    bar.className = "bar";
+    var fill = document.createElement("span");
+    fill.style.width = Math.min(100, Math.round((a[1] / MAX) * 100)) + "%";
+    fill.style.background = tone(a[1]);
+    bar.appendChild(fill);
+    sev.appendChild(bar);
+
+    var di = document.createElement("td");
+    di.className = "n m";
+    di.style.color = tone(a[1]);
+    di.textContent = a[1].toFixed(1);
+
+    var dist = document.createElement("td");
+    dist.className = "n m";
+    dist.style.color = "#9BA3AC";
+    dist.textContent = a[2];
+
+    var pts = document.createElement("td");
+    pts.className = "n m";
+    pts.style.color = "#7D858E";
+    pts.textContent = String(a[3]);
+
+    [name, sev, di, dist, pts].forEach(function (c) { tr.appendChild(c); });
+    body.appendChild(tr);
+  });
+
+  var LIMS = [
+    ["open", "s-open", "The open map under-records median openings and service roads, so absolute figures come out longer than the real drive. Ratios between areas hold; individual values do not."],
+    ["in progress", "s-prog", "Ground verification against routes people actually drive. First field day, 1 Nov 2026: 5 of 5 comparable directions at 3 places matched the model; one pass was rejected and five places could not be scored. The 2 Nov night drive added S12 (matched, under a pairing rule changed after that drive; declared on the results page). The 3 Nov night drive added S10 and S08 (both matched, under a loop rule written after that drive; declared on the results page). Repeat drives on other days are under way. Area figures remain model values until more places are driven."],
+    ["open", "s-open", "Map lag. Openings in medians are built and closed faster than any map updates. Every figure is true for the map of its extract date, shown at the foot of this page. One driven crossing found a new opening the map did not yet have: there the real drive was a fraction of the modelled one."],
+    ["corrected", "s-fix", "We assumed the third of points flagged as extreme were mostly bad data. They are not. Four in five are crossings under 25 m apart and the typical one needs 2.5 km of driving — the thing we set out to measure."],
+    ["wrong", "s-fix", "We predicted the flagging was an artefact of the study area boundary. The data says otherwise: the points furthest from the boundary are the worst. The test could not answer its own question, and that is recorded rather than quietly dropped."],
+    ["resolved", "s-fix", "Early versions paired roads with the flyovers above them, treated crossing streets as two sides of one road, and let a review flag quietly remove a third of the points from the published median. All three are fixed and locked out by tests named after the bug."]
+  ];
+  var lw = document.getElementById("lims");
+  LIMS.forEach(function (l) {
+    var row = document.createElement("div");
+    row.className = "lim";
+    var s = document.createElement("span");
+    s.className = "s m " + l[1];
+    s.textContent = l[0];
+    var t = document.createElement("span");
+    t.className = "t";
+    t.textContent = l[2];
+    row.appendChild(s); row.appendChild(t);
+    lw.appendChild(row);
+  });
+
+  // ---- FAQ -------------------------------------------------------------
+  // Each answer carries the source it is derived from. These are the hooks a
+  // build step uses to regenerate this list from the ledger and the limitation
+  // set, so the FAQ cannot drift away from what the project actually holds.
+  // Until that step exists the source line is still useful: it tells a reader
+  // exactly what to check, and it tells us which answers go stale together.
+  var FAQ = [
+    ["Is this official?",
+     ["No. arcroad is an independent citizen project with no affiliation to GHMC, HMDA, NHAI, the Government of Telangana, or any political party. Nobody has endorsed it and nobody funds it."],
+     "project charter, decision D-11"],
+    ["What is a detour index?",
+     ["How far you must drive to reach a point directly across the road, divided by the straight-line distance between them. An index of 40 means forty times further by road than as the crow flies — twenty metres apart becomes eight hundred metres of driving."],
+     "method, step 4"],
+    ["Why are there no final numbers?",
+     ["Because not one figure here has been checked against a route somebody has actually driven. The open map under-records small connections, so every absolute value is inflated by an amount we cannot yet quantify.",
+      "Ratios between areas survive that problem, because it affects all areas alike. Individual values do not. The first verification drive is a crossing twenty-one metres wide that the model says costs 2,344 m."],
+     "known limitations, Phase 2b gate"],
+    ["Why does one area say ‘likely a gap in the map’?",
+     ["Where a typical route runs past ten kilometres to cross twenty metres, a hole in the open map is a likelier explanation than a real detour. Those rows stay in the ranking, labelled, rather than being quietly removed — hiding the weakest row is exactly what we tell everyone else not to do.",
+      "They are also the first places we go back and correct the map."],
+     "gap threshold, 10,000 m"],
+    ["Why nothing about walking?",
+     ["The open map holds 407 pedestrian crossings and 212 footbridges for a metropolitan area of roughly ten million people, and none at all within 400 m of Abids or Secunderabad station. That cannot be true of the ground.",
+      "Absence in the map is not absence in reality, so this project makes no claim about walking. Everything here is about driving."],
+     "probe v1.1, 25 Oct 2026"],
+    ["Why not travel time, when that is what I actually feel?",
+     ["Because congestion changes and geometry does not. A median opening that is four hundred metres away is still four hundred metres away after the roadworks finish and after the traffic clears. Measuring time would produce a figure anyone could wave away by pointing at a bad afternoon."],
+     "method, what this does not measure"],
+    ["Do you track me?",
+     ["No. No accounts, no location permission, no analytics, no cookies that identify you. This page holds no personal data of any kind, and an automated test blocks any commit that would change that."],
+     "an automated privacy check on every change"],
+    ["Can I use this data?",
+     ["Yes. Map data is © OpenStreetMap contributors under ODbL, and arcroad's derived measurements are published under ODbL too. Attribute both. If you build a derived database, share it under the same licence — a chart or an article made from the numbers does not have to be."],
+     "data licence: ODbL"],
+    ["Will there be other cities?",
+     ["The method takes a bounding box and a road network, so it does not care which city it is, and the open map covers all of India. But running fifty unverified cities would multiply the exposure by fifty rather than the value. One city verified first, then a second with different road morphology as a replication test."],
+     "expansion plan"],
+    ["Has this project got anything wrong?",
+     ["Yes, and they are listed on this page rather than quietly fixed. Early versions paired roads with the flyovers above them, treated crossing streets as two sides of one road, and let a review flag remove a third of the points from the published median.",
+      "We also predicted the flagging was an artefact of the study area boundary, and the data said otherwise. All of it is in the limitations above."],
+     "known limitations"]
+  ];
+  var fw = document.getElementById("faq");
+  FAQ.forEach(function (f) {
+    var d = document.createElement("details");
+    d.className = "q";
+    var s = document.createElement("summary");
+    s.textContent = f[0];
+    var a = document.createElement("div");
+    a.className = "a";
+    f[1].forEach(function (para) {
+      var pp = document.createElement("p");
+      pp.textContent = para;
+      a.appendChild(pp);
+    });
+    var src = document.createElement("span");
+    src.className = "src";
+    src.textContent = "source: " + f[2];
+    a.appendChild(src);
+    d.appendChild(s); d.appendChild(a);
+    fw.appendChild(d);
+  });
+
+  // ---- back to top ------------------------------------------------------
+  // Needed because someone arriving on an inline anchor lands mid-document
+  // with no obvious way back to the top.
+  var top = document.getElementById("top");
+  var smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(function () {
+      top.classList.toggle("on", window.scrollY > 500);
+      ticking = false;
+    });
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+  top.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
+    document.querySelector(".skip").focus();
+  });
+
+  // Provenance. Cloudflare Pages exposes the commit SHA at build time; until the
+  // build step injects it this prints the placeholder, which is itself honest.
+  var el = document.getElementById("prov");
+  var ds = document.documentElement.dataset;
+  el.textContent = (ds.commit ? "build " + (ds.build || "") + " · commit " + ds.commit + " · " : "")
+    + "map extract 2026-10-25 · drives to 7 Nov 2026";
+})();
+</script>
+
+<script src="search.js" defer></script>
+<script src="ticker.js" defer></script>
+</body>
+</html>

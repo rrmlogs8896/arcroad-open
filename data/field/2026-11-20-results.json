@@ -55,7 +55,7 @@
  ],
  "not_scored": [],
  "limitations": [
-  "Evening drive, 17:13-17:46 IST on a Friday. Phone GPS at 1 Hz; fixes worse than 20 m were dropped before scoring.",
+  "Evening drive on a Friday. Phone GPS at 1 Hz; fixes worse than 20 m were dropped before scoring.",
   "Scored under rules fixed before this drive was seen (the 2 Nov pairing rule and the 3 Nov loop rule); no rule was changed for it. S13 A to B is read by the loop rule, because its two points are 12.5 m apart.",
   "S11 A to B and S12 B to A were driven but the recording has a 23 second gap inside each pass, over the 15 second limit, so neither is counted. S11 A to B is to be driven again.",
   "Photos were taken on this drive but are not scored as evidence here: the photo rule (P) was not applied to them."

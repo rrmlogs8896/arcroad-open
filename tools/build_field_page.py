@@ -49,7 +49,7 @@ def out_of_scope() -> dict:
 def combine(days: list) -> dict:
     """All field days on one page: every pass keeps its own date; limits are listed once."""
     scope = out_of_scope()
-    out = {"day": day_list([d["day"] for d in days]),
+    out = {"day": day_list([d["day"] for d in days]), "days": [d["day"] for d in days],
            "model": days[-1]["model"], "passes": [], "not_scored": [], "limitations": [], "out_of_scope": [], "photos": []}
     for d in days:
         out["passes"] += [r for r in d["passes"] if r["id"] not in scope]
@@ -95,9 +95,67 @@ def render(day: dict) -> str:
     else:
         names = ph[0] if len(ph) == 1 else f"{', '.join(ph[:-1])} and {ph[-1]}"
         judged = "was judged under a rule" if len(ph) == 1 else "were judged under rules"
-        posthoc_note = (f" Counting {names}, which {judged} changed after the drive was seen,"
-                        f" the figure is {n_match} of {n_graded}; see the limits below.")
+        posthoc_note = (f" {names} {judged} changed after the drive was seen; see the limits below.")
+    if n_match == n_graded:
+        lead_main = (f"All {n_graded} comparable directions matched the model, and none failed."
+                     f" {n_strict} of them were judged under the rules and tolerance fixed before the drive.")
+    else:
+        lead_main = (f"{n_match} of {n_graded} comparable directions matched the model;"
+                     f" {n_strict} of them under the rules and tolerance fixed before the drive.")
     li = lambda xs: "".join(f"<li>{e(x)}</li>" for x in xs)  # noqa: E731
+    eff = {}
+    effp = os.path.join(ROOT, "data", "field", "effort.json")
+    if os.path.exists(effp):
+        with open(effp, encoding="utf-8") as fh:
+            eff = json.load(fh)
+    effort = ""
+    if eff:
+        drives = eff["drives"]
+        km_all = sum(x["km"] for x in drives)
+        km_gps = sum(x["km"] for x in drives if x["how"] == "GPS") + sum(x.get("gps_km", 0) for x in drives if x["how"] == "GPS and photos")
+        lo = round(km_all / eff["kmpl_high"] * eff["petrol_inr_per_l"], -2)
+        hi = round(km_all / eff["kmpl_low"] * eff["petrol_inr_per_l"], -2)
+        tries = len(day["passes"]) + len(day.get("not_scored", []))
+        ddays = len({x["date"] for x in drives})
+        cells = [(str(ddays), "days of driving"), (str(len(places)), "places driven"),
+                 (str(tries), "crossing attempts, including the ones that did not count"),
+                 (f"{int(km_all)}+ km", f"driven, at least ({int(km_gps)} km on GPS)"),
+                 (f"{eff['hours_recorded']}+ h", "of recorded driving"),
+                 (f"₹{int(lo):,} to ₹{int(hi):,}", "fuel, estimated"),
+                 (f"{eff['photos_labelled'] + eff['photos_reviewed']:,}", "photos taken on the drives"),
+                 (str(eff["changes_saved"]), f"changes saved to the site since {eff['since']}")]
+        crow = []
+        ctot_lo = ctot_hi = 0
+        for c in eff.get("costs", []):
+            if "inr" in c:
+                a = b = c["inr"]
+            elif "lo" in c:
+                a, b = c["lo"], c["hi"]
+            else:
+                a, b = int(lo), int(hi)
+            ctot_lo += a
+            ctot_hi += b
+            amt = f"₹{a:,}" if a == b else f"₹{a:,} to ₹{b:,}"
+            crow.append(f'<li><b>{e(amt)}</b>: {e(c["item"])} ({e(c["basis"])})</li>')
+        costs_html = (f'<h3>What it has cost so far</h3><p class="note">{e(eff.get("cost_period", ""))}, paid personally.</p>'
+                      f'<div class="stats"><div><b>₹{round(ctot_lo, -2):,.0f} to ₹{round(ctot_hi, -2):,.0f}</b><span>self-funded so far</span></div></div>'
+                      f'<ul>{"".join(crow)}</ul><p class="note">{e(eff.get("costs_share_note", ""))} {e(eff.get("costs_not_counted", ""))}</p>') if eff.get("costs") else ""
+        dl = "".join(f'<li><b>{e(short_date(x["date"]))}</b>: {x["km"]:g} km ({e(x["how"])}), {e(x["what"])}</li>' for x in drives)
+        effort = ('<h2>The work behind these numbers</h2><div class="stats">'
+                  + "".join(f"<div><b>{e(v)}</b><span>{e(k)}</span></div>" for v, k in cells) + "</div>"
+                  + f'<h3>Drive by drive</h3><ul>{dl}</ul>'
+                  + costs_html
+                  + f'<p class="note">{e(eff["funding"])} {e(eff["method"])} Petrol at ₹{eff["petrol_inr_per_l"]} a litre ({e(eff["petrol_date"])}). Updated {e(short_date(eff["updated"]))} {eff["updated"][:4]}.</p>')
+    hot = ""
+    hp = os.path.join(ROOT, "data", "field", "hotspots.json")
+    if os.path.exists(hp):
+        with open(hp, encoding="utf-8") as fh:
+            hj = json.load(fh)
+        rows = "".join(
+            f'<li><b>{e(r["place"])}</b>: {r["minutes"]:g} min crawling over {r["metres"]:,} m,'
+            f' about {r["metres"] / 1000 / (r["minutes"] / 60):.0f} km/h.</li>'
+            for r in hj["hotspots"])
+        hot = (f'<h2>Where the {e(short_date(hj["date"]))} drive slowed down</h2><p>Measured on the drive.</p><ul>{rows}</ul><p class="note">{e(hj["note"])}</p>')
     ns = "".join(f'<li><b>{e(x["id"])}</b> ({e(short_date(x.get("date")))}): {e(x["why"])}</li>' for x in day["not_scored"])
     oos = "".join(f'<li><b>{e(r["id"])} {DIRS.get(r["dir"], "")}</b> ({e(short_date(r.get("date")))}): driven {km(r["driven_m"])}'
                   f' against a model of {km(r.get("model_m"))}; {e(r["reason"])}, not counted.</li>'
@@ -181,14 +239,16 @@ img,svg,canvas,video{{max-width:100%}}
 {NAV}
 <p class="eyebrow">arcroad · Hyderabad · driven {e(day["day"])}</p>
 <h1>We drove the detours the map predicted.</h1>
-<p class="lead">{n_strict} of {n_graded} comparable directions matched the model under the rules and tolerance fixed before the drive.{posthoc_note}</p>
-<div class="stats"><div><b>{len(places)}</b><span>places now driven by arcroad</span></div><div><b>{n_strict}/{n_graded}</b><span>matched under rules fixed before the drive</span></div><div><b>{len(rejected)}</b><span>passes rejected</span></div></div>
+<p class="lead">{lead_main}{posthoc_note}</p>
+<div class="stats"><div><b>{len(places)}</b><span>places now driven by arcroad</span></div><div><b>{n_match}/{n_graded}</b><span>matched the model; {n_strict} of them under rules fixed before the drive</span></div><div><b>{len(rejected)}</b><span>passes rejected</span></div></div>
 <h2>Every pass</h2>
 <div class="wrap"><table>
 <thead><tr><th>Place</th><th>Date</th><th>Direction</th><th class="n">Straight across</th><th class="n">Model</th><th class="n">Driven</th><th class="n">Time</th><th>Verdict</th><th>Evidence level</th><th>Evidence kinds</th></tr></thead>
 <tbody>{"".join(rows)}</tbody></table></div>
 <p class="note">Times include waits at signals and U-turn queues. <a href="../cost/">What would this cost you?</a></p>
 {photos}
+{effort}
+{hot}
 <p class="note" id="codes">Place codes: S01 to S24 are the 24 places in arcroad&#39;s first field sample, drawn at random from the model before any drive (16 the model flagged as long detours, 8 ordinary controls, at least 500 m apart). S23 and S24 are on the Outer Ring Road and have been left out since 8 Nov 2026, because turning round on an expressway needs an interchange by design. T1 and T2 are two named stops on NH-65. A and B are the two sides of the median; A &rarr; B means driving from side A to the point straight across on side B.</p>
 <details class="more"><summary>Rejected passes, places not scored, limits and how this was scored</summary>
 <h3>Evidence kinds</h3><p>S a timed drive, P a usable photo at the place during the pass, R a repeat pass in the same direction. One kind is a candidate, two corroborated, three with a photo or an official record triangulated.</p>

@@ -30,10 +30,10 @@
   --accent:#E2743B; --soft:#F0C2A0; --good:#8FA89A; --warm:#C9A188;
   --paper:#FBFAF7; --ink:#1B1E22; --ink2:#5A6068; --rule:#E4E1DA;
   color-scheme:dark;
-}
+}/* art1q-oklch */@supports (color:oklch(0% 0 0)){:root{--bg:oklch(15.82% 0.0072 258.37);--surface:oklch(19.09% 0.0131 264.20);--field:oklch(21.68% 0.0151 261.62);--line:oklch(24.21% 0.0129 258.37);--line2:oklch(30.67% 0.0167 255.65);--fg:oklch(93.03% 0.0046 258.33);--fg2:oklch(97.27% 0.0017 247.84);--mut:oklch(65.96% 0.0163 251.23);--faint:oklch(61.30% 0.0166 251.25);--accent:oklch(67.62% 0.1539 45.86);--soft:oklch(84.62% 0.0697 58.10);--good:oklch(70.83% 0.0344 160.89);--warm:oklch(73.91% 0.0590 53.57);--paper:oklch(98.50% 0.0041 91.45);--ink:oklch(23.36% 0.0089 255.60);--ink2:oklch(48.66% 0.0149 255.57);--rule:oklch(91.01% 0.0100 87.47)}}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,sans-serif;}
 .m{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,monospace;font-variant-numeric:tabular-nums}
 .wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .staging{background:#15110D;border-bottom:1px solid #2A2520}
@@ -236,7 +236,7 @@ img,svg,canvas,video{max-width:100%}
   </section>
 </div></main>
 
-<footer><div class="wrap"><p>Map data © OpenStreetMap contributors (ODbL). Measurements by arcroad (ODbL).</p><!-- reuse:start --><span class="sn-reuse">© 2026 arcroad. Data (ODbL) and code (MIT) are free to reuse with credit; the arcroad name, logo, films and design are not. <a href="reuse/">What you may reuse</a> · <a href="terms/">Terms</a> · <a href="privacy/">Privacy</a></span><!-- reuse:end --></div></footer>
+<footer><div class="wrap"><p>Map data © OpenStreetMap contributors (ODbL). Measurements by arcroad (ODbL).</p><!-- reuse:start --><span class="sn-reuse">© 2026 arcroad. Data (ODbL) and code (MIT) are free to reuse with credit; the arcroad name, logo, films and design are not. <a href="reuse/">What you may reuse</a> · <a href="terms/">Terms</a> · <a href="privacy/">Privacy</a></span><!-- reuse:end --></div><p class="fine-proof" style="font-size:.92em;margin-top:.6em">Every release is fingerprinted and independently timestamped by public timestamp authorities, so the original can always be told from a copy (<a href="https://proof-ledger.pages.dev/" rel="noopener">the record</a>). Reuse is welcome under the licences above; passing this work off as someone else’s is not.</p></footer>
 
 <script src="kit/pairs.js"></script>
 <script src="kit/core.js"></script>

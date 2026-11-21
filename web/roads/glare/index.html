@@ -21,8 +21,8 @@
 <meta name="twitter:image" content="https://arcroad.org/og/glare.jpg">
 <meta name="theme-color" content="#05070B"><meta name="color-scheme" content="dark"><meta name="format-detection" content="telephone=no">
 <style>
-:root{--bg:#05070B;--fg:#E8EAED;--mute:#9AA0A6;--faint:#7D858E;--line:#1C2026;--accent:#E8A87C;--ok:#7CC5A0;--warn:#E5C07B;--card:#0E1116}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+:root{--bg:#05070B;--fg:#E8EAED;--mute:#9AA0A6;--faint:#7D858E;--line:#1C2026;--accent:#E8A87C;--ok:#7CC5A0;--warn:#E5C07B;--card:#0E1116}/* art1q-oklch */@supports (color:oklch(0% 0 0)){:root{--bg:oklch(12.77% 0.0108 259.64);--fg:oklch(93.64% 0.0046 258.33);--mute:oklch(70.28% 0.0111 247.99);--faint:oklch(61.30% 0.0166 251.25);--line:oklch(24.21% 0.0129 258.37);--accent:oklch(78.23% 0.0957 55.34);--ok:oklch(76.50% 0.0911 161.14);--warn:oklch(82.49% 0.0970 82.26)}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Inter,system-ui,-apple-system,sans-serif;}
 main{max-width:1180px;margin:0 auto;padding:40px 22px 80px}a{color:var(--accent)}
 .top{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;margin-bottom:26px}.top a{color:var(--mute);text-decoration:none}.top a:hover{color:var(--fg)}
 .eyebrow{font:500 12px/1.4 ui-monospace,SFMono-Regular,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
@@ -34,7 +34,7 @@ p.lead{font-size:clamp(16px,2.2vw,19px);color:#C9CDD2;max-width:720px;margin:0}
 .hud{position:absolute;left:16px;right:16px;top:14px;display:flex;justify-content:space-between;gap:12px;pointer-events:none;font:500 11px/1.3 ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;color:rgba(232,234,237,.78);text-shadow:0 1px 6px #000}
 .hud b{display:block;font:600 22px/1.1 Inter,system-ui,sans-serif;letter-spacing:-.01em;text-transform:none;color:#fff}
 .hud .vis{min-width:170px}
-.vbar{height:4px;border-radius:2px;background:rgba(255,255,255,.14);margin-top:6px;overflow:hidden}.vbar i{display:block;height:100%;width:var(--v,100%);background:linear-gradient(90deg,#E07A5F,#E5C07B 50%,#7CC5A0);transition:width .15s linear}
+.vbar{height:4px;border-radius:2px;background:rgba(255,255,255,.14);margin-top:6px;overflow:hidden}.vbar i{display:block;height:100%;width:var(--v,100%);background:linear-gradient(90deg,#E07A5F,#E5C07B 50%,#7CC5A0)}
 .hud .r{text-align:right}
 .dash{position:absolute;left:0;right:0;bottom:0;padding:14px 16px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;background:linear-gradient(transparent,rgba(0,0,0,.72))}
 .spd{font:600 34px/1 Inter,system-ui,sans-serif;color:#fff;text-shadow:0 1px 8px #000}.spd small{font:500 11px ui-monospace,monospace;letter-spacing:.12em;color:rgba(232,234,237,.7);margin-left:6px}
@@ -130,7 +130,7 @@ img,svg,canvas,video{max-width:100%}
 <p class="note">"What you can see of the person" is their luminance contrast with the glare, (Lo − Lb)/(Lb + Lveil), as a share of the same contrast without it, with dark clothing at 35% of the road's brightness. Recovery after the lamp passes, the stopping distance (1.5 s to react, 7 m/s² braking) and the wet-road streaks are simplified for illustration. This is a teaching model built on published equations, not a measurement of any road, and it does not claim how many crashes glare causes.</p>
 </details>
 
-<footer>Three.js (MIT), self-hosted. Nothing is stored or sent. <a href="../">Back to what else the road costs</a><!-- reuse:start --><span class="sn-reuse">© 2026 arcroad. Data (ODbL) and code (MIT) are free to reuse with credit; the arcroad name, logo, films and design are not. <a href="../../reuse/">What you may reuse</a> · <a href="../../terms/">Terms</a> · <a href="../../privacy/">Privacy</a></span><!-- reuse:end --></footer>
+<footer>Three.js (MIT), self-hosted. Nothing is stored or sent. <a href="../">Back to what else the road costs</a><!-- reuse:start --><span class="sn-reuse">© 2026 arcroad. Data (ODbL) and code (MIT) are free to reuse with credit; the arcroad name, logo, films and design are not. <a href="../../reuse/">What you may reuse</a> · <a href="../../terms/">Terms</a> · <a href="../../privacy/">Privacy</a></span><!-- reuse:end --><p class="fine-proof" style="font-size:.92em;margin-top:.6em">Every release is fingerprinted and independently timestamped by public timestamp authorities, so the original can always be told from a copy (<a href="https://proof-ledger.pages.dev/" rel="noopener">the record</a>). Reuse is welcome under the licences above; passing this work off as someone else’s is not.</p></footer>
 </main>
 <script src="vendor/three.min.js"></script>
 <script src="glare.js"></script>

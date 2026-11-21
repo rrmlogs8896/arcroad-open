@@ -23,8 +23,8 @@
 <link rel="preload" href="../fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../fonts/fonts.css">
 <style>
-:root{--bg:#05070B;--fg:#E8EAED;--mute:#9AA0A6;--faint:#7D858E;--line:#1C2026;--accent:#E8A87C;--card:#0E1116}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+:root{--bg:#05070B;--fg:#E8EAED;--mute:#9AA0A6;--faint:#7D858E;--line:#1C2026;--accent:#E8A87C;--card:#0E1116}/* art1q-oklch */@supports (color:oklch(0% 0 0)){:root{--bg:oklch(12.77% 0.0108 259.64);--fg:oklch(93.64% 0.0046 258.33);--mute:oklch(70.28% 0.0111 247.99);--faint:oklch(61.30% 0.0166 251.25);--line:oklch(24.21% 0.0129 258.37);--accent:oklch(78.23% 0.0957 55.34)}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Inter,system-ui,-apple-system,sans-serif;padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
 main{max-width:880px;margin:0 auto;padding:40px 22px 80px}a{color:var(--accent)}
 .eyebrow{font:500 12px/1.4 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
 h1{font-size:clamp(30px,5.4vw,54px);line-height:1.05;margin:0 0 14px;font-weight:600;letter-spacing:-.02em}
@@ -62,7 +62,7 @@ footer{margin-top:56px;color:var(--mute);font-size:13px;border-top:1px solid var
   <div class="card"><h2>Changes</h2><p>If these terms change, the date above changes with them. These terms are governed by the laws of India.</p></div>
 </div>
 
-<footer>arcroad is an independent citizen project.<!-- reuse:start --><span class="sn-reuse">© 2026 arcroad. Data (ODbL) and code (MIT) are free to reuse with credit; the arcroad name, logo, films and design are not. <a href="../reuse/">What you may reuse</a> · <a href="../terms/">Terms</a> · <a href="../privacy/">Privacy</a></span><!-- reuse:end --></footer>
+<footer>arcroad is an independent citizen project.<!-- reuse:start --><span class="sn-reuse">© 2026 arcroad. Data (ODbL) and code (MIT) are free to reuse with credit; the arcroad name, logo, films and design are not. <a href="../reuse/">What you may reuse</a> · <a href="../terms/">Terms</a> · <a href="../privacy/">Privacy</a></span><!-- reuse:end --><p class="fine-proof" style="font-size:.92em;margin-top:.6em">Every release is fingerprinted and independently timestamped by public timestamp authorities, so the original can always be told from a copy (<a href="https://proof-ledger.pages.dev/" rel="noopener">the record</a>). Reuse is welcome under the licences above; passing this work off as someone else’s is not.</p></footer>
 </main>
 </body>
 </html>

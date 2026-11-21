@@ -15,6 +15,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from site_nav import nav, reuse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MARK = '<meta name="arcroad:build" content="ar-000000000000">'  # replaced by the fingerprint tool before deploy
 DIRS = {"ab": "A → B", "ba": "B → A"}
 VERDICT = {"MATCH": "Matched the model", "SHORTER": "Much shorter than the model", "LONGER": "Longer than the model",
            "BETWEEN": "Differed from the model", "NO_MODEL": "No model route to compare",
@@ -49,11 +50,12 @@ def combine(days: list) -> dict:
     """All field days on one page: every pass keeps its own date; limits are listed once."""
     scope = out_of_scope()
     out = {"day": day_list([d["day"] for d in days]),
-           "model": days[-1]["model"], "passes": [], "not_scored": [], "limitations": [], "out_of_scope": []}
+           "model": days[-1]["model"], "passes": [], "not_scored": [], "limitations": [], "out_of_scope": [], "photos": []}
     for d in days:
         out["passes"] += [r for r in d["passes"] if r["id"] not in scope]
         out["out_of_scope"] += [dict(r, reason=scope[r["id"]]) for r in d["passes"] if r["id"] in scope]
         out["not_scored"] += [dict(x, date=d["day"]) for x in d["not_scored"]]
+        out["photos"] += d.get("photos", [])
         out["limitations"] += [x for x in d["limitations"] if x not in out["limitations"]]
     return out
 
@@ -100,10 +102,16 @@ def render(day: dict) -> str:
     oos = "".join(f'<li><b>{e(r["id"])} {DIRS.get(r["dir"], "")}</b> ({e(short_date(r.get("date")))}): driven {km(r["driven_m"])}'
                   f' against a model of {km(r.get("model_m"))}; {e(r["reason"])}, not counted.</li>'
                   for r in day.get("out_of_scope", []))
+    figs = "".join(f'<figure><img src="{e(p["src"])}" srcset="{e(p["src"][:-4])}-640.jpg 640w, {e(p["src"])} 1280w" sizes="(max-width: 700px) 100vw, 470px"'
+                   f' alt="{e(p["alt"])}" width="{p["w"]}" height="{p["h"]}" loading="lazy" decoding="async">'
+                   f'<figcaption>{e(p["caption"])}</figcaption></figure>' for p in day.get("photos", []))
+    photos = (f'<h2>Photos from the drives</h2><div class="figs">{figs}</div>'
+              '<p class="note">Photos, not renders. Number plates, faces and phone numbers are blurred; the dashboard is cropped out.</p>') if figs else ""
     nr = "".join(f'<li><b>{e(r["id"])} {DIRS.get(r["dir"], "")}</b>: {e(r["reason"])}</li>' for r in rejected)
     return f"""<!doctype html>
 <html lang="en">
 <head>
+{MARK}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>arcroad · driven results, {e(day["day"])}</title>
@@ -122,8 +130,8 @@ def render(day: dict) -> str:
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://arcroad.org/og/field.jpg">
 <style>
-:root{{--bg:#0B0D10;--fg:#E8EAED;--mute:#9AA0A6;--line:#1C2026;--accent:#E8A87C;--ok:#7CC5A0}}
-*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}}
+:root{{--bg:#0B0D10;--fg:#E8EAED;--mute:#9AA0A6;--line:#1C2026;--accent:#E8A87C;--ok:#7CC5A0}}/* art1q-oklch */@supports (color:oklch(0% 0 0)){{:root{{--bg:oklch(15.82% 0.0072 258.37);--fg:oklch(93.64% 0.0046 258.33);--mute:oklch(70.28% 0.0111 247.99);--line:oklch(24.21% 0.0129 258.37);--accent:oklch(78.23% 0.0957 55.34)}}}}
+*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Inter,system-ui,-apple-system,sans-serif;}}
 main{{max-width:980px;margin:0 auto;padding:48px 22px 80px}}a{{color:var(--accent)}}
 .eyebrow{{font:500 12px/1.4 ui-monospace,SFMono-Regular,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:0 0 10px}}
 h1{{font-size:clamp(28px,5vw,44px);line-height:1.12;margin:0 0 14px;font-weight:600;letter-spacing:-.01em}}
@@ -135,6 +143,7 @@ th,td{{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;ver
 td.n,th.n{{text-align:right;font-family:ui-monospace,SFMono-Regular,monospace;font-variant-numeric:tabular-nums}}
 tr.driven td:first-child{{box-shadow:inset 3px 0 0 var(--ok)}}ul{{padding-left:20px}}li{{margin:4px 0}}
 .note{{color:var(--mute);font-size:13px}}
+.figs{{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}}figure{{margin:0}}figure img{{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}}figcaption{{color:var(--mute);font-size:13px;margin-top:8px}}
 .top{{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;margin-bottom:28px}}.top a{{color:var(--mute);text-decoration:none}}.top a:hover{{color:var(--fg)}}
 details.more{{margin-top:28px;border-top:1px solid var(--line)}}details.more summary{{cursor:pointer;padding:14px 0;color:var(--mute);font-size:14px}}details.more summary:hover{{color:var(--fg)}}
 details.more h3{{font-size:15px;margin:18px 0 6px;font-weight:600}}details.more p,details.more li{{font-size:14px;color:#C9CDD2}}footer{{margin-top:56px;color:var(--mute);font-size:13px;border-top:1px solid var(--line);padding-top:18px}}
@@ -179,6 +188,7 @@ img,svg,canvas,video{{max-width:100%}}
 <thead><tr><th>Place</th><th>Date</th><th>Direction</th><th class="n">Straight across</th><th class="n">Model</th><th class="n">Driven</th><th class="n">Time</th><th>Verdict</th><th>Evidence level</th><th>Evidence kinds</th></tr></thead>
 <tbody>{"".join(rows)}</tbody></table></div>
 <p class="note">Times include waits at signals and U-turn queues. <a href="../cost/">What would this cost you?</a></p>
+{photos}
 <p class="note" id="codes">Place codes: S01 to S24 are the 24 places in arcroad&#39;s first field sample, drawn at random from the model before any drive (16 the model flagged as long detours, 8 ordinary controls, at least 500 m apart). S23 and S24 are on the Outer Ring Road and have been left out since 8 Nov 2026, because turning round on an expressway needs an interchange by design. T1 and T2 are two named stops on NH-65. A and B are the two sides of the median; A &rarr; B means driving from side A to the point straight across on side B.</p>
 <details class="more"><summary>Rejected passes, places not scored, limits and how this was scored</summary>
 <h3>Evidence kinds</h3><p>S a timed drive, P a usable photo at the place during the pass, R a repeat pass in the same direction. One kind is a candidate, two corroborated, three with a photo or an official record triangulated.</p>
@@ -207,8 +217,16 @@ def main():
     day = combine(days)
     out = os.path.join(ROOT, "web", "field")
     os.makedirs(out, exist_ok=True)
-    with open(os.path.join(out, "index.html"), "w", encoding="utf-8") as fh:
-        fh.write(render(day))
+    path = os.path.join(out, "index.html")
+    text = render(day)
+    if os.path.exists(path):  # keep the build mark the fingerprint tool gave this page
+        import re
+        with open(path, encoding="utf-8") as fh:
+            m = re.search(r'<meta name="arcroad:build" content="ar-[0-9a-f]{12}">', fh.read())
+        if m:
+            text = text.replace(MARK, m.group(0), 1)
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write(text)
     print("wrote web/field/index.html for", day["day"])
 
 

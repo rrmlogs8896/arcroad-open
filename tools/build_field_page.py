@@ -140,10 +140,9 @@ def render(day: dict) -> str:
         costs_html = (f'<h3>What it has cost so far</h3><p class="note">{e(eff.get("cost_period", ""))}, paid personally.</p>'
                       f'<div class="stats"><div><b>₹{round(ctot_lo, -2):,.0f} to ₹{round(ctot_hi, -2):,.0f}</b><span>self-funded so far</span></div></div>'
                       f'<ul>{"".join(crow)}</ul><p class="note">{e(eff.get("costs_share_note", ""))} {e(eff.get("costs_not_counted", ""))}</p>') if eff.get("costs") else ""
-        dl = "".join(f'<li><b>{e(short_date(x["date"]))}</b>: {x["km"]:g} km ({e(x["how"])}), {e(x["what"])}</li>' for x in drives)
         effort = ('<h2>The work behind these numbers</h2><div class="stats">'
                   + "".join(f"<div><b>{e(v)}</b><span>{e(k)}</span></div>" for v, k in cells) + "</div>"
-                  + f'<h3>Drive by drive</h3><ul>{dl}</ul>'
+                  + '<h3>The drives</h3><p class="note">13 days of driving: one in late October and 12 in November 2026, including ordinary trips with planned checks along the way.</p>'
                   + costs_html
                   + f'<p class="note">{e(eff["funding"])} {e(eff["method"])} Petrol at ₹{eff["petrol_inr_per_l"]} a litre ({e(eff["petrol_date"])}). Updated {e(short_date(eff["updated"]))} {eff["updated"][:4]}.</p>')
     hot = ""

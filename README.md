@@ -1,5 +1,7 @@
 # arcroad
 
+> Independent citizen project, not official and not advice. Read the [disclaimer](DISCLAIMER.md) before using the figures.
+
 *Working title in earlier documents: Hyderabad Mobility Atlas (HMA).*
 
 Measuring what road geometry costs the people who live beside it, from open data,

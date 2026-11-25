@@ -34,6 +34,8 @@ GROUPS = [
     ("part", "Take part", [
         ("volunteer/", "Volunteer", "Measure your own city"),
         ("report/", "Report a change", "A median opening opened or closed"),
+        ("roadmap/", "What comes next", "Plans for Hyderabad and other cities"),
+        ("how/", "How it is built", "The technology, in plain words"),
     ]),
 ]
 
@@ -107,6 +109,8 @@ PAGES = {
     "roads/index.html": ("../", "roads/", True),
     "roads/glare/index.html": ("../../", "roads/glare/", True),
     "volunteer/index.html": ("../", "volunteer/", True),
+    "roadmap/index.html": ("../", "roadmap/", True),
+    "how/index.html": ("../", "how/", True),
     "reuse/index.html": ("../", "reuse/", True),
     "moves/index.html": ("../", "moves/", True),
     "uturns/index.html": ("../", "uturns/", True),

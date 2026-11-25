@@ -15,4 +15,14 @@
       }
     });
   });
+
+  document.querySelectorAll("[data-ar-copy]").forEach(function (b) {
+    if (b.dataset.ready) return; b.dataset.ready = "1";
+    b.addEventListener("click", function () {
+      var url = b.dataset.url, label = b.textContent;
+      function say(t) { b.textContent = t; setTimeout(function () { b.textContent = label; }, 2000); }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(function () { say("Copied ✓"); }, function () { say(url); });
+      else say(url);
+    });
+  });
 })();

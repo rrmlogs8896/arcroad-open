@@ -16,23 +16,39 @@ PAGES = {
     "field/index.html": "field",
     "moves/index.html": "moves",
     "cost/index.html": "cost",
+    "roadmap/index.html": "roadmap",
+    "volunteer/index.html": "volunteer",
 }
+HOOK = "13 m across, 1.58 km to drive. What crossing your own road really costs in Hyderabad:"
 BLOCK = re.compile(r"<!-- share:start -->.*?<!-- share:end -->\n?", re.S)
-NOTE = ("Nothing you do here is sent to us or stored. "
-        "The link opens in your own phone, email or share app.")
+NOTE = ("Nothing you do here is sent to arcroad or stored. "
+        "Each button opens the app you pick, with just the link.")
 
 
 def block(slug: str, title: str) -> str:
     url = f"https://arcroad.org/{slug}/"
     mail = f"mailto:?subject={quote('arcroad: ' + title)}&body={quote(url)}"
     t = html.escape(title, quote=True)
+    text = quote(HOOK + " " + url)
+    apps = [
+        ("WhatsApp", f"https://wa.me/?text={text}"),
+        ("X", f"https://twitter.com/intent/tweet?text={quote(HOOK)}&url={quote(url)}"),
+        ("LinkedIn", f"https://www.linkedin.com/sharing/share-offsite/?url={quote(url)}"),
+        ("Facebook", f"https://www.facebook.com/sharer/sharer.php?u={quote(url)}"),
+        ("Telegram", f"https://t.me/share/url?url={quote(url)}&text={quote(HOOK)}"),
+    ]
+    app_links = "".join(
+        f'<a class="ar-share-btn ar-share-app" href="{html.escape(h, quote=True)}" target="_blank" rel="noopener noreferrer">{n}</a>'
+        for n, h in apps)
     return (
-        '<!-- share:start --><section class="ar-share" aria-label="Keep this page">'
+        '<!-- share:start --><section class="ar-share" aria-label="Share or keep this page">'
+        f'<p class="ar-share-h">Share this page</p><div class="ar-share-apps">{app_links}'
+        f'<button class="ar-share-btn" type="button" data-ar-copy data-url="{url}">Copy link</button>'
+        f'<button class="ar-share-btn" type="button" data-ar-share data-url="{url}" data-title="{t}">More…</button></div>'
         f'<details class="ar-share-qr"><summary>Open on your phone</summary>'
         f'<img src="/share/{slug}.svg" width="168" height="168" alt="QR code that opens {url}">'
         '<span>Point your phone camera at the code.</span></details>'
         f'<a class="ar-share-btn" href="{html.escape(mail, quote=True)}">Email me this link</a>'
-        f'<button class="ar-share-btn" type="button" data-ar-share data-url="{url}" data-title="{t}">Share</button>'
         f'<p class="ar-share-note">{NOTE}</p>'
         '<script src="/share.js" defer></script></section><!-- share:end -->\n'
     )

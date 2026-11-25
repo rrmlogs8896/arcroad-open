@@ -15,3 +15,23 @@ tools/films/land.js
 
 # Private files baked into the runner image (agent brief, secret-sauce index, candidate places): never committed
 research/runner/app/private/
+
+# Never commit: other track formats, raw photos, secrets
+*.fit
+*.kml
+*.kmz
+*.tcx
+*.geojsonl
+*.heic
+*.HEIC
+*.env
+.env*
+.dev.vars
+*.pem
+*.key
+**/raw/
+.wrangler/
+research/
+STATE.md
+functions/jury/
+web/jury/

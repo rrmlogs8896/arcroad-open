@@ -125,7 +125,7 @@ footer{{margin-top:56px;color:var(--mute);font-size:13px;border-top:1px solid va
 
 <div class="ask">
 <h2>What we ask of the city</h2>
-<p>The proposed route, as the roads and the direction of travel, and the trial dates. With those, the loop figures for every pair above are computed the same day and published here with the method, the code and the limits. We will share the results with Cyberabad Traffic Police, SCSC and CMC before anyone else.</p>
+<p>The proposed route, as the roads and the direction of travel, and the trial dates. With those, the loop figures for every pair above are computed promptly and published here with the method, the code and the limits. We will share the results with Cyberabad Traffic Police, SCSC and CMC before anyone else.</p>
 </div>
 
 <h2>Why the route has to come from the city</h2>
@@ -136,7 +136,7 @@ footer{{margin-top:56px;color:var(--mute);font-size:13px;border-top:1px solid va
 <li><b>Written before it was run.</b> The question, the threshold for "longer" (at least 100 m and 10%), the hypothesis and the competing explanation were fixed in a dated pre-registration before any distance was computed. Every later change is dated and applied to every result.</li>
 <li><b>Open.</b> OpenStreetMap data (ODbL), open routers, MIT-licensed code. Anyone can rerun it.</li>
 <li><b>Checked against the road.</b> arcroad has already driven its modelled detours at seven Hyderabad places: all 10 directions matched the model and none failed, 7 of them under rules fixed before driving. <a href="../field/">See every pass</a>.</li>
-<li><b>Cheap to run.</b> A laptop, about three minutes, no paid data. The city could run it on any future change.</li>
+<li><b>Cheap to run.</b> A normal laptop, a quick run, no paid data. The city could run it on any future change.</li>
 </ul>
 
 <details class="more"><summary>Method in detail</summary>

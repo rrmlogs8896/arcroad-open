@@ -15,7 +15,8 @@
     moves: ["A prize is a start. Your street is the point.", "Join the people measuring their own crossings."],
     uturns: ["Know a U-turn like these?", "Add your area and help us time it."],
     report: ["Thank you for looking closely.", "Join and we will send you the next place to check."],
-    globe: ["Know a crossing like this one?", "Add your area and help us measure it."]
+    globe: ["Know a crossing like this one?", "Add your area and help us measure it."],
+    volunteer: ["Measure the crossing near you.", "Add your area and choose how you would like to help."]
   };
   var TASKS = [["check", "Check one crossing near you", "/uturns/"], ["map", "Fix one road on OpenStreetMap", "https://www.openstreetmap.org/"], ["report", "Report one opening that opened or closed", "/report/"], ["tell", "Tell your resident association or college", "/moves/"], ["cost", "Work out your own crossing's cost", "/cost/"]];
   var HELP = [["Time a crossing", "Driving and timing a crossing near me"], ["Take photos", "Photographing a place (faces and plates blurred)"], ["Fix the map", "Fixing roads on OpenStreetMap"], ["Spread the word", "Telling my resident association or college"], ["Bring it to my city", "Running arcroad for another city"]];
@@ -45,7 +46,7 @@
     + "@media (prefers-reduced-motion:reduce){.jn-k i{animation:none}.jn button,.jn .jn-b,.jn-bar i{transition:none}}@media print{.jn{display:none}}";
   document.head.appendChild(css);
 
-  function kicker() { return '<p class="jn-k"><i aria-hidden="true"></i>' + (count ? count.toLocaleString("en-IN") + (count === 1 ? " citizen has" : " citizens have") + " joined" : "Citizens measuring their roads") + '</p>'; }
+  function kicker() { return '<p class="jn-k"><i aria-hidden="true"></i>' + (count >= 50 ? count.toLocaleString("en-IN") + (count === 1 ? " citizen has" : " citizens have") + " joined" : "Citizens measuring their roads") + '</p>'; }
   function paint(el) {
     var ctx = el.getAttribute("data-join"), c = COPY[ctx] || COPY.home, v = load();
     if (!v) {

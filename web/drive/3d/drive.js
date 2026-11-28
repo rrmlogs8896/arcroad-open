@@ -2,7 +2,7 @@
  *
  * Every number shown comes from a field drive by arcroad:
  *   S18 a→b (west side to east side): 1,579.5 m in 193 s; b→a: 1,546.0 m in 692 s; straight 13.1 m (data/field/2026-11-01-results.json)
- *   S12 a→b (north side to south side): 1,951.2 m in 245 s, after dark; straight 17.4 m (data/field/2026-11-02-results.json)
+ *   S12 a→b (north side to south side): 1,951.2 m in 245 s; straight 17.4 m (data/field/2026-11-02-results.json)
  * Only places with a matched drive can be chosen; every other place is listed as not driven yet.
  * The road is drawn straight and scaled so the route length equals the driven length. Where the car
  * slows and stops is illustrated; the total time equals the driven time. Vehicles, buildings and trees
@@ -74,7 +74,7 @@
     return out;
   };
   var VC = new T3.MeshLambertMaterial({ vertexColors: true });
-  // after dark: one soft round light used for lamps, headlights and their pools on the road
+  // night scene: one soft round light used for lamps, headlights and their pools on the road
   var LIGHT = { night: !!PL.night, glare: false };
   var GLOW = (function () { var c = document.createElement('canvas'); c.width = c.height = 128; var g = c.getContext('2d');
     var gr = g.createRadialGradient(64, 64, 0, 64, 64, 64); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(0.2, 'rgba(255,255,255,.55)');
@@ -400,15 +400,15 @@
     var d = DRIVES.ab, set = function (id, t) { var e = $(id); if (e) e.textContent = t; };
     document.title = 'arcroad · ' + Math.round(STRAIGHT) + ' metres across at ' + PID;
     set('p-h1', Math.round(STRAIGHT) + ' metres across.');
-    set('p-lead', PL.road + ', ' + PL.area + '. The other side is ' + SM + ' away, and there is no way across. Take the wheel for the detour we drove in ' + PL.day + (PL.night ? ' after dark' : '') + ', on its real clock.');
+    set('p-lead', PL.road + ', ' + PL.area + '. The other side is ' + SM + ' away, and there is no way across. Take the wheel for the detour we drove in ' + PL.day + ', on its real clock.');
     set('h-straight', SM); set('intro-h', 'The other side is ' + SM + ' away, across the median.');
     set('s-who', 'Illustration, not a design: distances are measured on this drawing. ' + PL.owner);
     var act = $('s-act'); if (act) act.href = '../../act.html?pair=' + PID;
     var f = $('facts'); if (f) f.innerHTML = '<div><b>' + SM + '</b><span>Straight across, on OpenStreetMap. The median has no gap at this point.</span></div>' +
-      '<div><b>' + (d.m / 1000).toFixed(2) + ' km · ' + fmtDur(d.s) + '</b><span>' + d.from.charAt(0).toUpperCase() + d.from.slice(1) + ' to ' + d.to + ', as we drove it in ' + PL.day + (PL.night ? ', after dark' : '') + '. The model said ' + (d.model / 1000).toFixed(2) + ' km.</span></div>' +
+      '<div><b>' + (d.m / 1000).toFixed(2) + ' km · ' + fmtDur(d.s) + '</b><span>' + d.from.charAt(0).toUpperCase() + d.from.slice(1) + ' to ' + d.to + ', as we drove it in ' + PL.day + '. The model said ' + (d.model / 1000).toFixed(2) + ' km.</span></div>' +
       '<div><b>Not driven yet</b><span>' + d.to.charAt(0).toUpperCase() + d.to.slice(1) + ' to ' + d.from + '. We publish it once it has been driven.</span></div>' +
       '<div><b>Evidence level 1</b><span>Driven and matched the model, counted under a pairing rule changed on 2 Nov after this drive was seen. <a href="../../field/">Every pass we drove</a></span></div>';
-    var n1 = $('n-clock'); if (n1) n1.textContent = 'The distance and the clock are from our drive in ' + PL.day + ', after dark: one driver, one car, phone GPS once a second (about ±50 m). Night times are shorter than at peak hours. Where the car slows and stops is illustrated; the total time is what we measured.';
+    var n1 = $('n-clock'); if (n1) n1.textContent = 'The distance and the clock are from our drive in ' + PL.day + ': one driver, one car, phone GPS once a second (about ±50 m). Times outside the peak hours are shorter than at peak. Where the car slows and stops is illustrated; the total time is what we measured.';
     var n2 = $('n-road'); if (n2) n2.textContent = 'The road is drawn straight, level and to scale in length; the real road here is a flyover and bends, and its exact U-turn points may sit a little nearer or further. The vehicles, buildings and trees are made up for illustration. No photo, person or number plate from the drive appears anywhere.';
     Array.prototype.forEach.call($('c-dir').querySelectorAll('button'), function (b) { var k = b.getAttribute('data-v');
       if (!DRIVES[k]) b.hidden = true; else b.textContent = DRIVES[k].from.charAt(0).toUpperCase() + DRIVES[k].from.slice(1) + ' to ' + DRIVES[k].to; });
@@ -435,7 +435,7 @@
     S.mode = 'done'; S.t = PACE[S.dir].T; stage.classList.add('done'); playB.textContent = 'Drive again'; skipB.disabled = true;
     var d = DRIVES[S.dir], o = DRIVES[S.dir === 'ab' ? 'ba' : 'ab'];
     $('r-head').textContent = SM + ' across. ' + (d.m / 1000).toFixed(2) + ' km and ' + fmtDur(d.s) + ' to get there.';
-    $('r-body').textContent = 'That is the drive we made in ' + PL.day + (PL.night ? ', after dark,' : '') + ' from the ' + d.from + ' to the ' + d.to + '. ' +
+    $('r-body').textContent = 'That is the drive we made in ' + PL.day + ' from the ' + d.from + ' to the ' + d.to + '. ' +
       (o ? 'The other way, ' + o.from + ' to ' + o.to + ', took ' + fmtDur(o.s) + ' for ' + (o.m / 1000).toFixed(2) + ' km. One drive each way, at one time of day: another hour will differ.' : 'The other way has not been driven yet. One drive, at one time of day: another hour will differ.');
     var both = !!o, km = (d.m + (o ? o.m : 0) - (both ? 2 : 1) * STRAIGHT) / 1000 * COST.days, secs = (d.s + (o ? o.s : 0)) * COST.days;
     $('r-month').textContent = (both ? 'Crossing once each way every working day' : 'Crossing this way once every working day') + ': about ' + Math.round(km) + ' km and ' + fmtDur(secs) +

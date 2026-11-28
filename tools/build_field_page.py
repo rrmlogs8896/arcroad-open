@@ -116,7 +116,7 @@ def render(day: dict) -> str:
         lo = round(km_all / eff["kmpl_high"] * eff["petrol_inr_per_l"], -2)
         hi = round(km_all / eff["kmpl_low"] * eff["petrol_inr_per_l"], -2)
         tries = len(day["passes"]) + len(day.get("not_scored", []))
-        ddays = len({x["date"] for x in drives})
+        ddays = len({x.get("day", x["date"]) for x in drives})
         cells = [(str(ddays), "days of driving"), (str(len(places)), "places driven"),
                  (str(tries), "crossing attempts, including the ones that did not count"),
                  (f"{int(km_all)}+ km", f"driven, at least ({int(km_gps)} km on GPS)"),

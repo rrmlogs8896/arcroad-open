@@ -29,7 +29,6 @@ GROUPS = [
         ("cost/", "Cost calculator", "Your crossing in rupees and minutes"),
         ("roads/", "What else the road costs", "Barricades, works, parking, surface"),
         ("roads/glare/", "Night glare", "An oncoming high beam, from the driver's seat"),
-        ("act.html", "Write to the people responsible", "A ready letter for each place"),
     ]),
     ("part", "Take part", [
         ("volunteer/", "Volunteer", "Measure your own city"),

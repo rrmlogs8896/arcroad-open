@@ -19,6 +19,7 @@ PAGES = {
     "moves/index.html": ("moves", "</main>"),
     "uturns/index.html": ("uturns", "</main>"),
     "report/index.html": ("report", "</main>"),
+    "volunteer/index.html": ("volunteer", '<details class="more"><summary>Safety rules for field checks'),
 }
 BLOCK = re.compile(re.escape(START) + r".*?" + re.escape(END) + r"\n?", re.S)
 

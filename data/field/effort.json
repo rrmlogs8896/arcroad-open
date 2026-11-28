@@ -9,98 +9,112 @@
   "photos_reviewed": 682,
   "photos_labelled": 2608,
   "changes_saved": 178,
-  "since": "25 Oct 2026",
+  "since": "October 2026",
   "funding": "Self-funded, no sponsors.",
   "method": "GPS distances come from the phone's recordings, counting only stretches with readings no more than 15 minutes apart. Where a drive was not fully recorded, the distance is estimated from the positions stored in the photos taken on it, which gives a straight-line minimum. Ordinary trips that were not recorded are not counted, so the real figures are higher. Fuel is an estimate: that distance at 10 to 18 km per litre and the Hyderabad petrol price on the date shown. Routes, start points and times of day are never published.",
   "drives": [
     {
-      "date": "2026-10-25",
+      "date": "2026-10",
       "km": 36.9,
       "how": "GPS",
-      "what": "first look at the problem"
+      "what": "first look at the problem",
+      "day": 1
     },
     {
-      "date": "2026-11-01",
+      "date": "2026-11",
       "km": 115.0,
       "how": "GPS",
-      "what": "field day 1, highway and ring road, about 5 and a half hours out; 77 minutes the phone did not record are not counted"
+      "what": "field day 1, highway and ring road, about 5 and a half hours out; 77 minutes the phone did not record are not counted",
+      "day": 2
     },
     {
-      "date": "2026-11-02",
+      "date": "2026-11",
       "km": 20.4,
       "how": "GPS",
-      "what": "ordinary trip, recorded"
+      "what": "ordinary trip, recorded",
+      "day": 3
     },
     {
-      "date": "2026-11-02",
+      "date": "2026-11",
       "km": 25.3,
       "how": "GPS",
-      "what": "ordinary trip with planned checks"
+      "what": "ordinary trip with planned checks",
+      "day": 3
     },
     {
-      "date": "2026-11-03",
+      "date": "2026-11",
       "km": 20,
       "how": "photos",
-      "what": "ordinary trip with planned checks, distance estimated"
+      "what": "ordinary trip with planned checks, distance estimated",
+      "day": 4
     },
     {
-      "date": "2026-11-04",
+      "date": "2026-11",
       "km": 12,
       "how": "photos",
-      "what": "ordinary trip with planned checks, distance estimated"
+      "what": "ordinary trip with planned checks, distance estimated",
+      "day": 5
     },
     {
-      "date": "2026-11-06",
+      "date": "2026-11",
       "km": 14,
       "how": "photos",
-      "what": "ordinary trip with planned checks, distance estimated"
+      "what": "ordinary trip with planned checks, distance estimated",
+      "day": 6
     },
     {
-      "date": "2026-11-07",
+      "date": "2026-11",
       "km": 21.6,
       "how": "GPS and photos",
       "what": "the recorder dropped out; 21.6 km from photo positions, of which the measured crossing (2.2 km) is on GPS",
-      "gps_km": 2.2
+      "gps_km": 2.2,
+      "day": 7
     },
     {
-      "date": "2026-11-12",
+      "date": "2026-11",
       "km": 29.2,
       "how": "photos",
-      "what": "three stretches, the recorder kept disconnecting; distance estimated from photo positions"
+      "what": "three stretches, the recorder kept disconnecting; distance estimated from photo positions",
+      "day": 8
     },
     {
-      "date": "2026-11-13",
+      "date": "2026-11",
       "km": 15.7,
       "how": "photos",
-      "what": "the recorder kept disconnecting; distance estimated from photo positions"
+      "what": "the recorder kept disconnecting; distance estimated from photo positions",
+      "day": 9
     },
     {
-      "date": "2026-11-20",
+      "date": "2026-11",
       "km": 25.5,
       "how": "GPS and photos",
       "what": "8.5 km on GPS, the rest estimated from photo positions",
-      "gps_km": 8.5
+      "gps_km": 8.5,
+      "day": 10
     },
     {
-      "date": "2026-11-21",
+      "date": "2026-11",
       "km": 48.6,
       "how": "GPS",
-      "what": "repeat drives until one crossing counted; time parked with the recorder still on is not counted"
+      "what": "repeat drives until one crossing counted; time parked with the recorder still on is not counted",
+      "day": 11
     },
     {
-      "date": "2026-11-22",
+      "date": "2026-11",
       "km": 16.9,
       "how": "GPS",
-      "what": "reading through the study corridor; only the corridor part is counted"
+      "what": "reading through the study corridor; only the corridor part is counted",
+      "day": 12
     },
     {
-      "date": "2026-11-23",
+      "date": "2026-11",
       "km": 16.0,
       "how": "GPS",
-      "what": "reading through the study corridor; only the corridor part is counted"
+      "what": "reading through the study corridor; only the corridor part is counted",
+      "day": 13
     }
   ],
-  "cost_period": "25 Oct to 21 Nov 2026, about one month",
+  "cost_period": "Late October to late November 2026, about one month",
   "costs": [
     {
       "item": "Fuel for the drives",

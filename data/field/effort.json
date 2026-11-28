@@ -140,11 +140,18 @@
       "basis": "one third of about 5,000 a month"
     },
     {
+      "item": "Pay-as-you-go API usage: two independent review runs of the results",
+      "lo": 880,
+      "hi": 950,
+      "basis": "US$10.52 in total, at 84 to 90 rupees a dollar"
+    },
+    {
       "item": "Large one-off computing jobs",
       "inr": 0,
       "basis": "covered by free monthly credits"
     }
   ],
   "costs_not_counted": "Not yet counted: other subscriptions used in part, tolls, parking, wear on the car, and the time spent.",
-  "costs_share_note": "Subscriptions and home running costs are shared with two other public projects, so arcroad carries one third, the same rule used on those sites."
+  "costs_share_note": "Subscriptions and home running costs are shared with two other public projects, so arcroad carries one third, the same rule used on those sites.",
+  "photos_note": "3,290 photos taken on the drives. Each was sorted by software and by hand for day or night, signals, glare and U-turn queues; faces and number plates are blurred before anything is shown; 5 are published here. Raw photos stay private."
 }
